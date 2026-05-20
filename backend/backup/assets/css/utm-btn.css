@@ -1,0 +1,318 @@
+/* ===========================================
+   CORES PARA BOTÕES UTM - ORIGEM/FONTE (SOURCE)
+   Baseadas nos utm_source existentes no banco
+   =========================================== */
+
+   /* Instagram (ig) - Gradiente roxo/laranja */
+#source_ig:checked + .btn {
+    background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045) !important;
+    color: white !important;
+    border-color: #833ab4 !important;
+}
+
+/* YouTube (yt) - Vermelho */
+#source_yt:checked + .btn {
+    background-color: #ff0000 !important;
+    color: white !important;
+    border-color: #ff0000 !important;
+}
+
+/* LinkedIn (in) - Azul LinkedIn */
+#source_in:checked + .btn {
+    background-color: #0e76a8 !important;
+    color: white !important;
+    border-color: #0e76a8 !important;
+}
+
+/* TikTok (tktk) - Preto com detalhe cyan/magenta */
+#source_tktk:checked + .btn {
+    background: linear-gradient(45deg, #000000, #00f2ea, #ff0050) !important;
+    color: white !important;
+    border-color: #000000 !important;
+}
+
+/* Threads (thrd) - Preto e branco */
+#source_thrd:checked + .btn {
+    background: linear-gradient(45deg, #000000, #ffffff) !important;
+    color: #000 !important;
+    border-color: #000000 !important;
+}
+
+/* Spotify (spot) - Verde Spotify */
+#source_spot:checked + .btn {
+    background-color: #1DB954 !important;
+    color: white !important;
+    border-color: #1DB954 !important;
+}
+
+/* WhatsApp (wpp) - Verde WhatsApp */
+#source_wpp:checked + .btn {
+    background-color: #25D366 !important;
+    color: white !important;
+    border-color: #25D366 !important;
+}
+
+/* Apple (appl) - Cinza escuro Apple */
+#source_appl:checked + .btn {
+    background-color: #555555 !important;
+    color: white !important;
+    border-color: #555555 !important;
+}
+
+/* Amazon (amz) - Laranja Amazon */
+#source_amz:checked + .btn {
+    background-color: #FF9900 !important;
+    color: #232F3E !important;
+    border-color: #FF9900 !important;
+}
+
+/* Deezer (dzr) - Laranja Deezer */
+#source_dzr:checked + .btn {
+    background-color: #a238ff !important;
+    color: white !important;
+    border-color: #a238ff !important;
+}
+
+/* ===========================================
+   CORES PARA PERFIS (CANAIS/PROFILE)
+   Cores atualizadas com identidade de marca
+   =========================================== */
+
+/* Sales Prime - Preto com dourado */
+#profile_sales:checked + .btn {
+    background-color: #0B1426 !important;
+    color: #F2A011 !important;
+    border-color: #F2A011 !important;
+}
+
+/* Dani Martins - Bege com roxo */
+#profile_dani:checked + .btn {
+    background-color: #F9F7EF !important;
+    color: #A673DD !important;
+    border-color: #A673DD !important;
+}
+
+/* Prosperus - Azul escuro com amarelo */
+#profile_prosperus:checked + .btn {
+    background-color: #031A2B !important;
+    color: #FFDA71 !important;
+    border-color: #FFDA71 !important;
+}
+
+/* Lumiere - Verde escuro com azul claro */
+#profile_lumiere:checked + .btn {
+    background-color: #0F2C24 !important;
+    color: #BDE6F4 !important;
+    border-color: #BDE6F4 !important;
+}
+
+/* Prime - Dourado com preto */
+#profile_prime:checked + .btn {
+    background-color: #D4AF37 !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
+}
+
+/* PodVender - Preto com roxo neon */
+#profile_podvender:checked + .btn {
+    background-color: #080808 !important;
+    color: #D429FF !important;
+    border-color: #D429FF !important;
+}
+
+/* Joel Jota - Azul vibrante */
+#profile_joel:checked + .btn {
+    background-color: #4759FF !important;
+    color: #F9F7EF !important;
+    border-color: #F9F7EF !important;
+}
+
+/* Podcast - Roxo podcast */
+#profile_podcast:checked + .btn {
+    background-color: #8A2BE2 !important;
+    color: white !important;
+    border-color: white !important;
+}
+
+/* Email Marketing - Vermelho Gmail */
+#profile_emailmkt:checked + .btn {
+    background-color: #EA4335 !important;
+    color: white !important;
+    border-color: white !important;
+    padding: 0 40px!important;
+}
+
+/* Newsletter - Azul newsletter */
+#profile_newsletter:checked + .btn {
+    background-color: #0073E6 !important;
+    color: white !important;
+    border-color: white !important;
+}
+
+/* ===========================================
+   CORES PARA ORIGEM/FONTE (CONTENT)
+   Cores temáticas por categoria
+   =========================================== */
+
+/* Mídia Paga (TP) - Vermelho dinheiro */
+#content_tp:checked + .btn {
+    background-color: #DC143C !important;
+    color: white !important;
+    border-color: #DC143C !important;
+}
+
+/* Mídia Orgânica (TO) - Verde crescimento */
+#content_to:checked + .btn {
+    background-color: #228B22 !important;
+    color: white !important;
+    border-color: #228B22 !important;
+}
+
+/* Pesquisa Paga (SEM) - Laranja atenção */
+#content_sem:checked + .btn {
+    background-color: #FF8C00 !important;
+    color: white !important;
+    border-color: #FF8C00 !important;
+}
+
+/* Comercial (COMM) - Azul corporativo */
+#content_comm:checked + .btn {
+    background-color: #1E3A8A !important;
+    color: white !important;
+    border-color: #1E3A8A !important;
+}
+
+/* SDR - Ciano tecnologia */
+#content_sdr:checked + .btn {
+    background-color: #00CED1 !important;
+    color: white !important;
+    border-color: #00CED1 !important;
+}
+
+/* Social Selling (SSELL) - Rosa engajamento */
+#content_ssell:checked + .btn {
+    background-color: #E91E63 !important;
+    color: white !important;
+    border-color: #E91E63 !important;
+}
+
+/* Suporte (CS) - Azul confiança */
+#content_cs:checked + .btn {
+    background-color: #4682B4 !important;
+    color: white !important;
+    border-color: #4682B4 !important;
+}
+
+/* Time Joel Jota (TJJ) - Azul vibrante Joel */
+#content_tjj:checked + .btn {
+    background-color: #4759FF !important;
+    color: white !important;
+    border-color: #4759FF !important;
+}
+
+/* Mídia Offline (MO) - Marrom tradicional */
+#content_mo:checked + .btn {
+    background-color: #8B4513 !important;
+    color: white !important;
+    border-color: #8B4513 !important;
+}
+
+/* Mídia Televisiva (TV) - Azul TV */
+#content_tv:checked + .btn {
+    background-color: #4169E1 !important;
+    color: white !important;
+    border-color: #4169E1 !important;
+}
+
+/* APP Mobile (APP) - Roxo aplicativo */
+#content_app:checked + .btn {
+    background-color: #9C27B0 !important;
+    color: white !important;
+    border-color: #9C27B0 !important;
+}
+
+/* ===========================================
+   CORES PARA TIPO DE SOCIAL SELLING
+   Seguindo cores das redes sociais
+   =========================================== */
+
+/* Instagram Ativo - Gradiente Instagram intenso */
+#ss_ig_ativo:checked + .btn {
+    background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045) !important;
+    color: white !important;
+    border-color: #833ab4 !important;
+}
+
+/* Instagram Passivo - Gradiente Instagram suave */
+#ss_ig_passivo:checked + .btn {
+    background: linear-gradient(45deg, #a855d4, #fd5d5d, #fcc065) !important;
+    color: white !important;
+    border-color: #a855d4 !important;
+}
+
+/* LinkedIn Ativo - Azul LinkedIn forte */
+#ss_in_ativo:checked + .btn {
+    background-color: #0e76a8 !important;
+    color: white !important;
+    border-color: #0e76a8 !important;
+}
+
+/* LinkedIn Passivo - Azul LinkedIn claro */
+#ss_in_passivo:checked + .btn {
+    background-color: #0096d6 !important;
+    color: white !important;
+    border-color: #0096d6 !important;
+}
+
+/* ===========================================
+   EFEITOS HOVER CONSISTENTES
+   =========================================== */
+
+/* Hover para botões de origem/fonte (SOURCE) */
+#source_ig + .btn:hover { border-color: #833ab4; color: #833ab4; }
+#source_yt + .btn:hover { border-color: #ff0000; color: #ff0000; }
+#source_in + .btn:hover { border-color: #0e76a8; color: #0e76a8; }
+#source_tktk + .btn:hover { border-color: #00f2ea; color: #00f2ea; }
+#source_thrd + .btn:hover { border-color: #000; color: #000; }
+#source_spot + .btn:hover { border-color: #1DB954; color: #1DB954; }
+#source_wpp + .btn:hover { border-color: #25D366; color: #25D366; }
+#source_appl + .btn:hover { border-color: #555555; color: #555555; }
+#source_amz + .btn:hover { border-color: #FF9900; color: #FF9900; }
+#source_dzr + .btn:hover { border-color: #a238ff; color: #a238ff; }
+
+/* Hover para perfis/canais */
+#profile_sales + .btn:hover { border-color: #F2A011 !important; background-color: #0B1426 !important; color: #F2A011 !important; }
+#profile_dani + .btn:hover { border-color: #A673DD !important; background-color: #F9F7EF !important; color: #A673DD !important; }
+#profile_prosperus + .btn:hover { border-color: #FFDA71 !important; background-color: #031A2B !important; color: #FFDA71 !important; }
+#profile_lumiere + .btn:hover { border-color: #BDE6F4 !important; background-color: #0F2C24 !important; color: #BDE6F4 !important; }
+#profile_prime + .btn:hover { border-color: #000000 !important; background-color: #D4AF37 !important; color: #000000 !important; }
+#profile_podvender + .btn:hover { border-color: #D429FF !important; background-color: #080808 !important; color: #D429FF !important; }
+#profile_joel + .btn:hover { border-color: #F9F7EF !important; background-color: #4759FF !important; color: #F9F7EF !important; }
+#profile_podcast + .btn:hover { border-color: white !important; background-color: #8A2BE2 !important; color: white !important; }
+#profile_emailmkt + .btn:hover { padding: 0 40px;border-color: white !important; background-color: #EA4335 !important; color: white !important; }
+#profile_newsletter + .btn:hover { border-color: white !important; background-color: #0073E6 !important; color: white !important; }
+
+/* Hover para origem/fonte (CONTENT) */
+#content_tp + .btn:hover { border-color: #DC143C !important; background-color: #DC143C !important; color: white !important; }
+#content_to + .btn:hover { border-color: #228B22 !important; background-color: #228B22 !important; color: white !important; }
+#content_sem + .btn:hover { border-color: #FF8C00 !important; background-color: #FF8C00 !important; color: white !important; }
+#content_comm + .btn:hover { border-color: #1E3A8A !important; background-color: #1E3A8A !important; color: white !important; }
+#content_sdr + .btn:hover { border-color: #00CED1 !important; background-color: #00CED1 !important; color: white !important; }
+#content_ssell + .btn:hover { border-color: #E91E63 !important; background-color: #E91E63 !important; color: white !important; }
+#content_cs + .btn:hover { border-color: #4682B4 !important; background-color: #4682B4 !important; color: white !important; }
+#content_tjj + .btn:hover { border-color: #4759FF !important; background-color: #4759FF !important; color: white !important; }
+#content_mo + .btn:hover { border-color: #8B4513 !important; background-color: #8B4513 !important; color: white !important; }
+#content_tv + .btn:hover { border-color: #4169E1 !important; background-color: #4169E1 !important; color: white !important; }
+#content_app + .btn:hover { border-color: #9C27B0 !important; background-color: #9C27B0 !important; color: white !important; }
+
+/* Hover para Social Selling */
+#ss_ig_ativo + .btn:hover { border-color: #833ab4 !important; color: #833ab4 !important; }
+#ss_ig_passivo + .btn:hover { border-color: #a855d4 !important; color: #a855d4 !important; }
+#ss_in_ativo + .btn:hover { border-color: #0e76a8 !important; color: #0e76a8 !important; }
+#ss_in_passivo + .btn:hover { border-color: #0096d6 !important; color: #0096d6 !important; }
+
+/* Garantir que o texto fique legível */
+.btn-check:checked + .btn {
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+}

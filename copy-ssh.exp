@@ -1,0 +1,25 @@
+#!/usr/bin/expect -f
+set timeout 10
+set host [lindex $argv 0]
+set user [lindex $argv 1]
+set password [lindex $argv 2]
+
+spawn ssh-copy-id -o StrictHostKeyChecking=no $user@$host
+expect {
+    "assword:" {
+        send "$password\r"
+        exp_continue
+    }
+    "Number of key(s) added" {
+        exit 0
+    }
+    "All keys were skipped" {
+        exit 0
+    }
+    timeout {
+        exit 1
+    }
+    eof {
+        exit 1
+    }
+}

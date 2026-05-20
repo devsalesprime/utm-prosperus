@@ -1,0 +1,26 @@
+[always]
+read = [
+  ".context/project.toml",
+  ".context/rules.md",
+  ".context/soul.md",
+]
+
+[task.design]
+description = "Atualizações em estilo CSS, interações JavaScript, responsividade UI HTML (index.php, dashboard.php)."
+read = [".context/memory/progress.md"]
+write = [".context/memory/progress.md"]
+
+[task.feature]
+description = "Novas features PHP, integrações de banco de dados (geração UTM e gestão)."
+read = [".context/memory/issues.md", ".context/memory/progress.md"]
+write = [".context/memory/progress.md"]
+
+[task.fix]
+description = "Resolução de erros e refinamento de funções antigas PHP/JS/SQL."
+read = [".context/memory/issues.md", ".context/memory/progress.md"]
+write = [".context/memory/issues.md", ".context/memory/progress.md"]
+
+[task.refactor]
+description = "Reorganização de arquivos entre includes/, docs/, tests/, assets/. Atualizar require paths e links HTML."
+read = [".context/memory/progress.md", ".context/rules.md", ".context/project.toml"]
+write = [".context/memory/progress.md"]

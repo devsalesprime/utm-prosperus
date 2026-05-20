@@ -1,0 +1,155 @@
+/* Media query para telas pequenas */
+@media (max-width: 768px) {
+    /* Títulos responsivos */
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+    }
+    
+    h3 {
+        font-size: 1.5rem;
+    }
+    
+    h4 {
+        font-size: 1.25rem;
+    }
+    
+    /* Botões responsivos */
+    .btn {
+        padding: 0.4rem 1.2rem;
+        font-size: 0.85rem;
+    }
+    
+    .btn-lg {
+        padding: 0.6rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    /* Inputs responsivos */
+    .form-control,
+    .form-select {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Botões de seleção em grid */
+    .btn-group {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .btn-group .btn {
+        width: 100%;
+        flex: 1 0 45%;
+        margin-bottom: 5px;
+    }
+    
+    /* Switcher de tema horizontal */
+    .theme-switch-container {
+        flex-direction: row;
+        width: 150px;
+        height: 40px;
+    }
+
+    .theme-switch-bg {
+        height: 100%;
+        width: 50%;
+        transform: translateX(0);
+        transition: transform 0.4s ease-in-out;
+    }
+
+    .theme-switch-container.light-active .theme-switch-bg {
+        transform: translateX(0);
+    }
+
+    .theme-switch-container.dark-active .theme-switch-bg {
+        transform: translateX(100%);
+    }
+
+    .theme-switch-option {
+        flex-direction: row;
+        padding: 0;
+    }
+
+    .light-option {
+        margin-top: 0;
+        padding-right: 0;
+    }
+
+    .dark-option {
+        padding: 0 0 0 20px;
+    }
+
+    /* Ajustes de layout */
+    .fixed-top {
+        position: relative;
+    }
+
+    .mt-5 {
+        margin-top: 0 !important;
+    }
+
+    /* Tabelas responsivas */
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    thead tr {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 1rem;
+    }
+
+    td {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        border: none;
+        border-bottom: 1px solid #ddd;
+        padding: 8px;
+        position: relative;
+    }
+
+    td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-bottom: 5px;
+        border-bottom: 1px solid #ccc;
+    }
+    
+    /* Comentários em tabelas */
+    td[data-label="Comentário"] {
+        max-width: none;
+        white-space: normal;
+    }
+    
+    td[data-label="Comentário"]:before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-bottom: 5px;
+        border-bottom: 1px solid #ccc;
+    }
+}
+
+/* ===========================================
+   RESPONSIVIDADE PARA BOTÕES DE SELEÇÃO
+   =========================================== */
+@media (max-width: 768px) {
+    .btn-group {
+        flex-wrap: wrap;
+    }
+    .btn-group .btn {
+        flex: 1 0 45%;
+        margin-bottom: 5px;
+    }
+}

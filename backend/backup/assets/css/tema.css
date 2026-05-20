@@ -1,0 +1,107 @@
+/* Variáveis de cores para o modo claro */
+:root {
+    --primary-color: #3D4F73;
+    --secondary-color: #0B1426;
+    --accent-color: #F2A011;
+    --background-color: #fff;
+    --text-color: #212529;
+    --border-color: #dee2e6;
+    --input-background: white;
+    --input-text: #212529;
+    --placeholder-color: #6c757d;
+}
+
+/* Modo escuro */
+body.dark-active {
+    --primary-color: #F2A011;
+    --secondary-color: #3D4F73;
+    --accent-color: #3D4F73;
+    --background-color: #212529;
+    --text-color: #f8f9fa;
+    --border-color: #495057;
+    --input-background: #2d3748;
+    --input-text: #e2e8f0;
+    --placeholder-color: #a0aec0;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Estilos para modo claro/escuro nos inputs */
+.light-input {
+    background-color: white !important;
+    color: black !important;
+}
+
+.dark-input {
+    background-color: #343a40 !important;
+    color: white !important;
+}
+
+.light-placeholder::placeholder {
+    color: #6c757d !important;
+}
+
+.dark-placeholder::placeholder {
+    color: #adb5bd !important;
+}
+
+/* Aplicação das variáveis nos elementos */
+body.dark-active h1,
+body.dark-active h2,
+body.dark-active h3,
+body.dark-active h4,
+body.dark-active h5,
+body.dark-active h6 {
+    color: var(--primary-color) !important;
+    border-color: var(--secondary-color);
+}
+
+body.dark-active .form-control,
+body.dark-active .form-select {
+    background-color: var(--input-background);
+    border-color: var(--border-color);
+    color: var(--input-text);
+}
+
+body.dark-active .form-control:focus,
+body.dark-active .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(242, 160, 17, 0.25);
+}
+
+body.dark-active .form-control::placeholder {
+    color: var(--placeholder-color);
+}
+
+body.dark-active .form-label {
+    color: var(--primary-color);
+}
+
+body.dark-active .form-check-label {
+    color: var(--text-color);
+}
+
+body.dark-active .form-check-input {
+    border-color: var(--border-color);
+    background-color: var(--input-background);
+}
+
+body.dark-active .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Botões no modo escuro */
+body.dark-active .btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #D48F0F 100%);
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+body.dark-active .btn-primary:hover {
+    background: linear-gradient(135deg, #FFB733 0%, #E6A20F 100%);
+    border-color: var(--primary-color);
+}

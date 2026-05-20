@@ -1,0 +1,26 @@
+# Credentials and Environment
+.env
+.env.*
+!.env.example
+*.log
+error_log
+php_errors.log
+
+# Dependencies
+vendor/
+node_modules/
+
+# OS and IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Uploads or Local files (ajuste se a pasta uploads tiver outro nome)
+uploads/
+/public/uploads/

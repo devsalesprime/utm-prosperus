@@ -1,0 +1,14 @@
+# Redirect UTMs antigas salesprime.com.br → utm.prosperusclub.com.br
+# Colocar na raiz do servidor salesprime.com.br (ou na pasta /utm/)
+
+RewriteEngine On
+
+# Redirecionar go.php?code=CODIGO
+RewriteCond %{REQUEST_URI} ^/go\.php$
+RewriteCond %{QUERY_STRING} ^code=([a-zA-Z0-9_\-]+)$
+RewriteRule ^(.*)$ https://utm.prosperusclub.com.br/go/%1? [R=301,L]
+
+# Redirecionar short codes diretos (ex: salesprime.com.br/abc123)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-zA-Z0-9_\-]+)$ https://utm.prosperusclub.com.br/go/$1 [R=301,L]

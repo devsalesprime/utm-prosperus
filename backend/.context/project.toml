@@ -1,0 +1,20 @@
+name = "UTM Generator System"
+version = "2.6.1+"
+description = "Gerenciador robusto de geração, encurtamento de UTMS e Painel Analítico."
+
+[tech]
+frontend = ["HTML5", "CSS3", "Vanilla JavaScript"]
+backend = ["PHP 8.2+", "PDO (MySQL)"]
+database = "MySQL/MariaDB"
+auth = "Sessões PHP, Rate Limiting Custom"
+
+[structure]
+api        = "api/"              # Endpoints JSON: dashboard_data, domains, permissions, create_utm
+includes   = "includes/"        # Backend: db.php, config.php, auth.php
+assets_css = "assets/css/"      # CSS: style.css, theme-antigravity.css, domain-selector.css
+assets_js  = "assets/js/"       # JS: script.js, utm-generator.js
+assets_img = "assets/images/"   # Logos, favicons
+docs       = "docs/"            # Toda documentação .md
+tests      = "tests/"           # Scripts debug- e setup- (não expor em produção)
+migrations = "migrations/"      # SQL de migrações de banco
+context    = ".context/"        # Metadados AI/contexto do projeto

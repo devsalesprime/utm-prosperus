@@ -1,0 +1,496 @@
+/* =========================================================
+   ANTIGRAVITY DESIGN SYSTEM
+   Variáveis e Base CSS para UTM Generator
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;600;700&family=Manrope:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Tipografia Antigravity */
+    --font-heading: 'Barlow Semi Condensed', sans-serif;
+    --font-body: 'Manrope', sans-serif;
+    
+    /* Variáveis Globais Antigravity - Efeitos e Espaçamentos */
+    --ag-radius-sm: 8px;
+    --ag-radius-md: 12px;
+    --ag-radius-lg: 16px;
+    --ag-radius-pill: 50px;
+    
+    --ag-shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --ag-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --ag-shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.12);
+    --ag-shadow-float: 0 20px 40px rgba(0, 0, 0, 0.12);
+    
+    --ag-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    
+    /* Configuração padrão herdada (Fallback) */
+    --color-primary: #0B1426;
+    --color-secondary: #3D4F73;
+    --color-accent: #F2A011;
+    --color-accent-hover: #F25C05;
+    --color-bg-main: #E9EBF4;
+    --color-bg-card: #FFFFFF;
+    --color-text-main: #1A1A1A;
+    --color-text-muted: #666666;
+    --color-border: rgba(0, 0, 0, 0.08);
+    --ag-glass-bg: rgba(255, 255, 255, 0.85);
+}
+
+/* =========================================================
+   TEMA 1: SALES PRIME (Padrão)
+   ========================================================= */
+body.theme-sales-prime {
+    --color-primary: #0B1426;       /* Chinese Black */
+    --color-secondary: #3D4F73;     /* Police Blue */
+    --color-accent: #F2A011;        /* Gamboge */
+    --color-accent-hover: #F25C05;  /* Persimmon */
+    --color-bg-main: #E9EBF4;       /* Bright Gray */
+    --color-bg-card: #FFFFFF;
+    --color-text-main: #1A1A1A;
+    --color-text-muted: #666666;
+    --color-border: rgba(11, 20, 38, 0.1);
+    --ag-glass-bg: rgba(255, 255, 255, 0.9);
+}
+
+/* Sales Prime - Dark Mode */
+body.theme-sales-prime.bg-dark,
+body.bg-dark.theme-sales-prime {
+    --color-primary: #E9EBF4;       /* Trocamos primária pra claro para contrastar no heading */
+    --color-secondary: #4A608A;
+    --color-bg-main: #0B1426;
+    --color-bg-card: #152033;
+    --color-text-main: #E9EBF4;
+    --color-text-muted: #9AA6B8;
+    --color-border: rgba(255, 255, 255, 0.1);
+    --ag-glass-bg: rgba(21, 32, 51, 0.85);
+    --ag-shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --ag-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* =========================================================
+   TEMA 2: PROSPERUS CLUB
+   ========================================================= */
+body.theme-prosperus-club {
+    --color-primary: #031A2B;       /* Azul Profundo */
+    --color-secondary: #123F5B;     /* Azul Liderança */
+    --color-accent: #FFDA71;        /* Ouro Vivo */
+    --color-accent-hover: #CA9A43;  /* Ouro Nobre */
+    --color-accent-light: #FFE39B;  /* Ouro Claro */
+    --color-bg-main: #EDF4F7;       /* Branco Visionário */
+    --color-bg-card: #FCF7F0;       /* Branco Essência */
+    --color-text-main: #1A1A1A;
+    --color-text-muted: #666666;
+    --color-border: rgba(3, 26, 43, 0.08);
+    --ag-glass-bg: rgba(252, 247, 240, 0.9);
+}
+
+/* Prosperus Club - Dark Mode */
+body.bg-dark.theme-prosperus-club {
+    --color-primary: #EDF4F7;       /* Trocado pra claro em fundos escuros */
+    --color-secondary: #1A5477;
+    --color-bg-main: #000000;       /* Preto Absoluto */
+    --color-bg-card: #0A141A;
+    --color-text-main: #EDF4F7;
+    --color-text-muted: #8AA0AD;
+    --color-border: rgba(255, 218, 113, 0.15);
+    --ag-glass-bg: rgba(10, 20, 26, 0.85);
+    --ag-shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --ag-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* =========================================================
+   BASE ANTIGRAVITY STYLES
+   Tipografia, Elementos e Formas Orgânicas
+   ========================================================= */
+
+body, body.bg-dark {
+    font-family: var(--font-body);
+    background-color: var(--color-bg-main) !important;
+    color: var(--color-text-main) !important;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-primary);
+    transition: color 0.4s ease;
+}
+
+/* O Glassmorphism e Flutuação (Cards) */
+.ag-card {
+    background: var(--color-bg-card);
+    border-radius: var(--ag-radius-lg);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--ag-shadow-sm);
+    transition: var(--ag-transition);
+    overflow: hidden;
+}
+
+.ag-card:hover {
+    box-shadow: var(--ag-shadow-float);
+    transform: translateY(-4px);
+    border-color: var(--color-accent);
+}
+
+.ag-glass {
+    background: var(--ag-glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--ag-shadow-sm);
+    border-radius: var(--ag-radius-lg);
+}
+
+/* Componentes de Input e Formulários Antigravity */
+.ag-input, .ag-select {
+    background-color: var(--color-bg-main);
+    border: 1px solid var(--color-border);
+    border-radius: var(--ag-radius-sm);
+    padding: 0.85rem 1.25rem;
+    color: var(--color-text-main);
+    font-family: var(--font-body);
+    font-weight: 500;
+    transition: var(--ag-transition);
+    width: 100%;
+}
+.ag-input:focus, .ag-select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    background-color: var(--color-bg-card);
+    box-shadow: 0 0 0 3px rgba(242, 160, 17, 0.15); /* Fallback */
+}
+body.theme-prosperus-club .ag-input:focus, 
+body.theme-prosperus-club .ag-select:focus {
+    box-shadow: 0 0 0 3px rgba(255, 218, 113, 0.25);
+}
+
+/* Botão Elevado Principal (Gerar UTM, Login) */
+.ag-btn-accent {
+    background: var(--color-accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--ag-radius-sm);
+    padding: 0.85rem 1.5rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(242, 160, 17, 0.35); /* sombra de acordo c a cor */
+    transition: var(--ag-transition);
+    cursor: pointer;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+body.theme-prosperus-club .ag-btn-accent {
+    color: #031A2B; /* Texto preto/azul para o fundo amarelo vivo do botão do pc */
+    box-shadow: 0 4px 15px rgba(255, 218, 113, 0.35);
+}
+.ag-btn-accent:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(242, 160, 17, 0.5);
+    color: #fff;
+}
+body.theme-prosperus-club .ag-btn-accent:hover {
+    color: #000000;
+    box-shadow: 0 8px 25px rgba(255, 218, 113, 0.5);
+}
+
+/* Tabelas flutuantes e painéis - Refinadas */
+.ag-table-wrapper {
+    background: var(--color-bg-card);
+    border-radius: var(--ag-radius-lg);
+    box-shadow: var(--ag-shadow-md);
+    border: none; /* Sem bordas agressivas */
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.ag-table-wrapper table {
+    margin: 0;
+    color: var(--color-text-main) !important;
+    background: transparent !important; /* Para não bugar hover do card */
+    --bs-table-color: var(--color-text-main);
+    --bs-table-striped-color: var(--color-text-main);
+    --bs-table-hover-color: var(--color-text-main);
+}
+.ag-table-wrapper th {
+    background: transparent !important; /* Deixa o card-bg brilhar */
+    color: var(--color-text-muted) !important; /* ← Força a cor Antigravity no header */
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--color-border);
+    padding: 1.25rem 1.5rem; /* Padding generoso */
+}
+.ag-table-wrapper td {
+    background: transparent !important; /* Força fundo do card */
+    color: var(--color-text-main) !important; /* ← Força cor nas células */
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+}
+.ag-table-wrapper tbody tr {
+    background: transparent !important;
+    transition: var(--ag-transition);
+}
+.ag-table-wrapper tbody tr:hover {
+    background-color: var(--color-bg-main) !important; /* Diferenciação sutil */
+}
+
+/* Helpers de Texto */
+.ag-text-accent {
+    color: var(--color-accent) !important;
+}
+.ag-text-primary {
+    color: var(--color-primary) !important;
+}
+.ag-text-muted {
+    color: var(--color-text-muted) !important;
+}
+
+/* Botão Secundário Contornado */
+.ag-btn-outline {
+    background: transparent;
+    color: var(--color-text-main);
+    border: 2px solid var(--color-border);
+    border-radius: var(--ag-radius-sm);
+    padding: 0.85rem 1.5rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--ag-transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.ag-btn-outline:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-bg-main);
+    transform: translateY(-2px);
+}
+
+/* Estilização para Abas Administrativas (.nav-tabs legadas do Bootstrap) */
+.nav-tabs {
+    border-bottom: 2px solid var(--color-border) !important;
+    gap: 0.5rem;
+    background: transparent;
+    margin-bottom: 1.5rem;
+}
+.nav-tabs .nav-link {
+    border: none !important;
+    color: var(--color-text-muted) !important;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--ag-radius-md) var(--ag-radius-md) 0 0 !important;
+    transition: var(--ag-transition);
+    background: transparent !important;
+    position: relative;
+}
+.nav-tabs .nav-link:hover {
+    color: var(--color-primary) !important;
+    background: var(--color-bg-main) !important;
+}
+.nav-tabs .nav-link.active {
+    color: var(--color-primary) !important;
+    background: var(--color-bg-card) !important;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+}
+.nav-tabs .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-accent);
+    border-radius: 3px 3px 0 0;
+}
+.tab-content {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* Modificadores de Dark Mode (Preview Input) */
+body.dark-theme input:read-only,
+body.dark-theme input:disabled,
+body.bg-dark input:read-only,
+body.bg-dark input:disabled,
+body.dark-theme .form-control:disabled,
+body.bg-dark .form-control:disabled {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #A0AEC0 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Modificadores de Dark Mode (utmPreviewCard) */
+body.dark-theme #utmPreviewCard .text-muted,
+body.bg-dark #utmPreviewCard .text-muted,
+body.dark-theme #urlPreview,
+body.bg-dark #urlPreview {
+    color: var(--color-text-main) !important;
+}
+
+body.dark-theme #utmPreviewCard .text-primary,
+body.bg-dark #utmPreviewCard .text-primary {
+    color: var(--color-accent) !important;
+}
+
+/* ============================================================
+   PAGINAÇÃO ANTIGRAVITY — ag-pagination
+   !important necessário para vencer especificidade Bootstrap 5
+   ============================================================ */
+
+/* Utilitários de cor de texto */
+.ag-text-accent { color: var(--color-accent) !important; }
+.ag-text-muted  { color: var(--color-text-muted) !important; }
+
+/* Container — ul precisa de !important para vencer Bootstrap ul reset */
+ul.ag-pagination {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: center !important;
+    gap: 4px !important;
+    list-style: none !important;
+    list-style-type: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-left: 0 !important; /* Bootstrap força padding-left: 2rem em ul */
+}
+
+/* Item da paginação — li */
+ul.ag-pagination > li.ag-page-item {
+    display: inline-flex !important;
+    list-style: none !important;
+}
+
+/* Link / botão de página */
+ul.ag-pagination .ag-page-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--color-text-main);
+    background: var(--color-bg-card);
+    border: 1.5px solid var(--color-border);
+    text-decoration: none;
+    transition: var(--ag-transition);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+
+ul.ag-pagination .ag-page-link:hover {
+    background: var(--color-accent) !important;
+    color: var(--color-primary) !important;
+    border-color: var(--color-accent) !important;
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--color-accent) 30%, transparent);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* Página ativa */
+ul.ag-pagination .ag-page-item.active .ag-page-link {
+    background: var(--color-accent) !important;
+    color: var(--color-primary) !important;
+    border-color: var(--color-accent) !important;
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--color-accent) 25%, transparent);
+    pointer-events: none;
+    font-weight: 700;
+}
+
+/* Dark mode: texto fixo escuro sobre fundo accent claro — garante contraste */
+body.bg-dark ul.ag-pagination .ag-page-item.active .ag-page-link,
+body.bg-dark ul.ag-pagination .ag-page-link:hover {
+    color: #031A2B !important;
+}
+
+/* Desabilitado */
+ul.ag-pagination .ag-page-item.disabled .ag-page-link {
+    opacity: 0.35 !important;
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+/* Badge de página (Página X / Y) */
+.ag-badge-accent {
+    display: inline-flex;
+    align-items: center;
+    background: var(--color-accent);
+    color: var(--color-primary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.4em 0.75em;
+    border-radius: 50px;
+    letter-spacing: 0.02em;
+    line-height: 1;
+}
+
+/* Dark mode: força texto escuro sobre accent claro */
+body.bg-dark .ag-badge-accent {
+    color: #031A2B !important;
+}
+
+/* Botões outline compatíveis com tema */
+.ag-btn-outline {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: .35rem;
+    padding: .5rem 1rem;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-text-main);
+    background: transparent;
+    border: 1.5px solid var(--color-border);
+    text-decoration: none;
+    transition: var(--ag-transition);
+    cursor: pointer;
+    white-space: nowrap;
+}
+.ag-btn-outline:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+/* Input group para filtros */
+.ag-input-group .input-group-text {
+    background: var(--color-bg-card) !important;
+    border-color: var(--color-border) !important;
+    color: var(--color-text-muted);
+}
+.ag-input-group .ag-input {
+    background: var(--color-bg-card) !important;
+    border-color: var(--color-border) !important;
+    color: var(--color-text-main) !important;
+}
+.ag-input-group .ag-input:focus {
+    background: var(--color-bg-card) !important;
+    border-color: var(--color-accent) !important;
+    color: var(--color-text-main) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent) !important;
+}
+.ag-input-group .ag-input::placeholder {
+    color: var(--color-text-muted);
+    opacity: .7;
+}

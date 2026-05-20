@@ -1,0 +1,15 @@
+<Files .htaccess>
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+SetEnv DB_HOST "localhost"
+SetEnv DB_NAME "hgsa7692_utm"
+SetEnv DB_USER "hgsa7692_utm"
+SetEnv DB_PASS "m7f8g7n9@"
+
+RewriteEngine On
+RewriteBase /utm/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-zA-Z0-9_\-]+)$ go.php?code=$1 [L,QSA]

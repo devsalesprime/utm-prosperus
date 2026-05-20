@@ -1,0 +1,45 @@
+<Files .htaccess>
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Proteger arquivo .env
+<Files .env>
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Proteger composer.json e composer.lock
+<FilesMatch "^composer\.(json|lock)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Proteger diretório vendor do Composer
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^vendor/.*$ - [F,L]
+</IfModule>
+
+# Regras de reescrita para URLs curtas
+RewriteEngine On
+RewriteBase /utm/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-zA-Z0-9_\-]+)$ go.php?code=$1 [L,QSA]
+
+# Segurança adicional
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Desabilitar listagem de diretórios
+Options -Indexes
+
+# Proteção contra acesso direto a arquivos PHP sensíveis
+<FilesMatch "\.(env|log|ini)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
