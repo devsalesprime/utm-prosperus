@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { getUTMs, toggleUTM, deleteUTM } from "@/lib/api";
 import type { UTM } from "@/types/utm";
 import styles from "./UTMTable.module.css";
@@ -24,6 +25,9 @@ export default function UTMTable() {
   const [qrModalUrl, setQrModalUrl] = useState<string | null>(null);
   const [logoMode, setLogoMode] = useState<"nenhuma" | "prosperus">("nenhuma");
   const { session } = useAuth();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -265,7 +269,7 @@ export default function UTMTable() {
       )}
 
       {/* Delete Modal */}
-      {deleteId && (
+      {mounted && deleteId && createPortal(
         <div className="ag-modal-overlay" onClick={() => setDeleteId(null)}>
           <div className="ag-modal" onClick={e => e.stopPropagation()}>
             <div className="ag-modal-header">
@@ -300,11 +304,12 @@ export default function UTMTable() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* QR Code Modal */}
-      {qrModalUrl && (
+      {mounted && qrModalUrl && createPortal(
         <div className="ag-modal-overlay" onClick={() => setQrModalUrl(null)}>
           <div className="ag-modal text-center" onClick={e => e.stopPropagation()}>
             <div className="ag-modal-header">
@@ -343,7 +348,7 @@ export default function UTMTable() {
             </div>
             <div className="mt-2">
               <button className="ag-btn-accent w-100" onClick={() => {
-                const svg = document.querySelector('.modal svg');
+                const svg = document.querySelector('.ag-modal svg');
                 if(!svg) return;
                 const svgData = new XMLSerializer().serializeToString(svg);
                 const canvas = document.createElement("canvas");
@@ -365,7 +370,8 @@ export default function UTMTable() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
