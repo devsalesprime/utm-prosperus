@@ -58,8 +58,8 @@ export default function Header({ onShowLoginModal }: Props) {
         {/* Usando o logo prosperus club pois o sales prime foi descontinuado */}
         <Link href="/" className="text-decoration-none text-reset">
           <img 
-            src={isDark ? "/images/logo-dark.png" : "/images/logo_prosperus_club.png"} 
-            alt="Logo" 
+            src={isDark ? "/images/logo-tema-claro.svg" : "/images/logo-tema-escuro.svg"} 
+            alt="Prosperus Club" 
             className="img-fluid d-block mx-auto" 
             style={{ maxWidth: 150 }}
           />
