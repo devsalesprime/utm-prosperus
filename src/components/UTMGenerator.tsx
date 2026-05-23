@@ -165,12 +165,20 @@ export default function UTMGenerator({ onSuccess }: Props) {
         <div className="input-group mb-3">
           <div className="btn-group w-100" role="radiogroup">
             <span className="input-group-text p5 rounded-end-0"><i className="bi bi-person me-1"></i> Canais:</span>
-            {["Sales-Prime", "Dani-Martins", "Prosperus", "Lumiere", "Prime", "PodVender", "Joel-Jota", "PodCast"].map(c => (
-              <React.Fragment key={c}>
-                <input type="radio" className="btn-check" id={`camp_${c}`} name="campaign" value={c} checked={campaign === c} onChange={() => setCampaign(c)} disabled={isDisabled} />
-                <label className="btn btn-outline-secondary" htmlFor={`camp_${c}`}>{c}</label>
-              </React.Fragment>
-            ))}
+            {["Sales-Prime", "Dani-Martins", "Prosperus", "Lumiere", "Prime", "PodVender", "Joel-Jota", "PodCast"].map(c => {
+              const idMap: Record<string, string> = {
+                "Sales-Prime": "sales", "Dani-Martins": "dani", "Prosperus": "prosperus",
+                "Lumiere": "lumiere", "Prime": "prime", "PodVender": "podvender",
+                "Joel-Jota": "joel", "PodCast": "podcast"
+              };
+              const cssId = `profile_${idMap[c]}`;
+              return (
+                <React.Fragment key={c}>
+                  <input type="radio" className="btn-check" id={cssId} name="campaign" value={c} checked={campaign === c} onChange={() => setCampaign(c)} disabled={isDisabled} />
+                  <label className="btn btn-outline-secondary" htmlFor={cssId}>{c}</label>
+                </React.Fragment>
+              );
+            })}
           </div>
         </div>
 
@@ -185,8 +193,8 @@ export default function UTMGenerator({ onSuccess }: Props) {
               {v: "TV", l: "Mídia Televisiva"}, {v: "APP", l: "APP Mobile"}, {v: "WEBINAR", l: "WEBINAR"}
             ].map(c => (
               <div className="col" key={c.v}>
-                <input type="radio" className="btn-check" id={`cont_${c.v}`} value={c.v} checked={contentSelect === c.v} onChange={() => setContentSelect(c.v)} disabled={isDisabled} />
-                <label className="btn btn-outline-secondary w-100" htmlFor={`cont_${c.v}`}>{c.l}</label>
+                <input type="radio" className="btn-check" id={`content_${c.v.toLowerCase()}`} value={c.v} checked={contentSelect === c.v} onChange={() => setContentSelect(c.v)} disabled={isDisabled} />
+                <label className="btn btn-outline-secondary w-100" htmlFor={`content_${c.v.toLowerCase()}`}>{c.l}</label>
               </div>
             ))}
           </div>
@@ -220,12 +228,15 @@ export default function UTMGenerator({ onSuccess }: Props) {
             </select>
             {ssName && (
               <div className="btn-group w-100 mt-2">
-                {["ATIVO_IG", "PASSIVO_IG", "ATIVO_IN", "PASSIVO_IN"].map(t => (
-                  <React.Fragment key={t}>
-                    <input type="radio" className="btn-check" id={`ss_${t}`} value={t} checked={ssContent === t} onChange={() => setSsContent(t)} />
-                    <label className="btn btn-outline-secondary" htmlFor={`ss_${t}`}>{t}</label>
-                  </React.Fragment>
-                ))}
+                {["ATIVO_IG", "PASSIVO_IG", "ATIVO_IN", "PASSIVO_IN"].map(t => {
+                  const cssId = `ss_${t.toLowerCase().split('_').reverse().join('_')}`;
+                  return (
+                    <React.Fragment key={t}>
+                      <input type="radio" className="btn-check" id={cssId} value={t} checked={ssContent === t} onChange={() => setSsContent(t)} />
+                      <label className="btn btn-outline-secondary" htmlFor={cssId}>{t}</label>
+                    </React.Fragment>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -262,8 +273,8 @@ export default function UTMGenerator({ onSuccess }: Props) {
               <span className="input-group-text p5 rounded-end-0"><i className="bi bi-menu-up me-1"></i> Source:</span>
               {["ig", "yt", "in", "tktk", "thrd", "spot", "wpp", "appl", "amz", "dzr", "email", "site"].map(s => (
                 <React.Fragment key={s}>
-                  <input type="radio" className="btn-check" id={`src_${s}`} value={s} checked={source === s} onChange={() => setSource(s)} disabled={isDisabled || Boolean(contentSelect === "SSELL" && ssContent && !ssContent.includes(s.toUpperCase().substring(0,2)))} />
-                  <label className="btn btn-outline-secondary" htmlFor={`src_${s}`}><i className={`bi bi-${s === 'wpp' ? 'whatsapp' : s === 'in' ? 'linkedin' : s === 'ig' ? 'instagram' : s === 'yt' ? 'youtube' : s === 'tktk' ? 'tiktok' : s === 'thrd' ? 'threads' : s === 'spot' ? 'spotify' : s === 'appl' ? 'apple' : s === 'amz' ? 'amazon' : s === 'email' ? 'envelope' : s === 'dzr' ? 'music-note-beamed' : 'globe'}`}></i></label>
+                  <input type="radio" className="btn-check" id={`source_${s}`} value={s} checked={source === s} onChange={() => setSource(s)} disabled={isDisabled || Boolean(contentSelect === "SSELL" && ssContent && !ssContent.includes(s.toUpperCase().substring(0,2)))} />
+                  <label className="btn btn-outline-secondary" htmlFor={`source_${s}`}><i className={`bi bi-${s === 'wpp' ? 'whatsapp' : s === 'in' ? 'linkedin' : s === 'ig' ? 'instagram' : s === 'yt' ? 'youtube' : s === 'tktk' ? 'tiktok' : s === 'thrd' ? 'threads' : s === 'spot' ? 'spotify' : s === 'appl' ? 'apple' : s === 'amz' ? 'amazon' : s === 'email' ? 'envelope' : s === 'dzr' ? 'music-note-beamed' : 'globe'}`}></i></label>
                 </React.Fragment>
               ))}
             </div>
