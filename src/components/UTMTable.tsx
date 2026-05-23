@@ -6,7 +6,7 @@ import { getUTMs, toggleUTM, deleteUTM } from "@/lib/api";
 import type { UTM } from "@/types/utm";
 import styles from "./UTMTable.module.css";
 import { useAuth } from "@/lib/auth-context";
-import { QRCodeSVG } from "qrcode.react";
+import { QRCodeCanvas } from "qrcode.react";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "";
 
@@ -151,7 +151,7 @@ export default function UTMTable() {
                     onClick={() => setQrModalUrl(`https://prosperusclub.com.br/${utm.shortened_url}`)}
                     title="Ampliar QR Code"
                   >
-                    <QRCodeSVG value={`https://prosperusclub.com.br/${utm.shortened_url}`} size={48} level="L" />
+                    <QRCodeCanvas value={`https://prosperusclub.com.br/${utm.shortened_url}`} size={48} level="L" />
                   </div>
                 </td>
                 
@@ -318,7 +318,7 @@ export default function UTMTable() {
             </div>
             <div className="p-4 bg-white d-inline-block rounded shadow-sm mb-3 mt-3">
               {logoMode === "prosperus" ? (
-                <QRCodeSVG 
+                <QRCodeCanvas 
                   value={qrModalUrl} 
                   size={200} 
                   level="H" 
@@ -331,7 +331,7 @@ export default function UTMTable() {
                   }}
                 />
               ) : (
-                <QRCodeSVG 
+                <QRCodeCanvas 
                   value={qrModalUrl} 
                   size={200} 
                   level="H" 
@@ -348,23 +348,13 @@ export default function UTMTable() {
             </div>
             <div className="mt-2">
               <button className="ag-btn-accent w-100" onClick={() => {
-                const svg = document.querySelector('.ag-modal svg');
-                if(!svg) return;
-                const svgData = new XMLSerializer().serializeToString(svg);
-                const canvas = document.createElement("canvas");
-                const ctx = canvas.getContext("2d");
-                const img = new Image();
-                img.onload = () => {
-                  canvas.width = img.width;
-                  canvas.height = img.height;
-                  ctx?.drawImage(img, 0, 0);
-                  const pngFile = canvas.toDataURL("image/png");
-                  const downloadLink = document.createElement("a");
-                  downloadLink.download = "qrcode.png";
-                  downloadLink.href = `${pngFile}`;
-                  downloadLink.click();
-                };
-                img.src = "data:image/svg+xml;base64," + btoa(svgData);
+                const canvas = document.querySelector('.ag-modal canvas') as HTMLCanvasElement;
+                if(!canvas) return;
+                const pngFile = canvas.toDataURL("image/png");
+                const downloadLink = document.createElement("a");
+                downloadLink.download = "qrcode.png";
+                downloadLink.href = pngFile;
+                downloadLink.click();
               }}>
                 <i className="bi bi-download me-2"></i> BAIXAR QR CODE
               </button>
