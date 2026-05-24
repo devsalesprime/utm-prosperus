@@ -61,7 +61,7 @@ export default function Header({ onShowLoginModal }: Props) {
             src={isDark ? "/images/logo-tema-claro.svg" : "/images/logo-tema-escuro.svg"} 
             alt="Prosperus Club" 
             className="img-fluid d-block mx-auto" 
-            style={{ maxWidth: 150 }}
+            style={{ maxWidth: 200 }}
           />
           <h1 className="text-center mt-3">Gerador de UTM</h1>
         </Link>
