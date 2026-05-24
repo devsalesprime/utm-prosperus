@@ -70,17 +70,17 @@ export default function LoginForm({ initialMode = "login", onClose }: Props) {
         <div className="form-container sign-up-container">
           <form onSubmit={handleRegister}>
             <h1>Crie sua conta</h1>
-            <input type="text" placeholder="Nome Completo" value={name} onChange={e => setName(e.target.value)} required />
-            <input type="email" placeholder="Email" value={regEmail} onChange={e => setRegEmail(e.target.value)} required />
-            <input type="password" placeholder="Senha" value={regPassword} onChange={e => setRegPassword(e.target.value)} required />
+            <input type="text" className="form-control mb-3" placeholder="Nome Completo" value={name} onChange={e => setName(e.target.value)} required />
+            <input type="email" className="form-control mb-3" placeholder="Email" value={regEmail} onChange={e => setRegEmail(e.target.value)} required />
+            <input type="password" className="form-control mb-3" placeholder="Senha" value={regPassword} onChange={e => setRegPassword(e.target.value)} required />
             <button type="submit" disabled={loading}>{loading ? "Enviando..." : "Cadastrar"}</button>
           </form>
         </div>
         <div className="form-container sign-in-container">
           <form onSubmit={handleLogin}>
             <h1>Logar</h1>
-            <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-            <input type="password" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} required />
+            <input type="email" className="form-control mb-3" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
+            <input type="password" className="form-control mb-3" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} required />
             <a href="#">Perdeu sua senha?</a>
             <button type="submit" disabled={loading}>{loading ? "Entrando..." : "Logar"}</button>
           </form>

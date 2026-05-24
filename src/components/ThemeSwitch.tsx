@@ -18,33 +18,7 @@ export default function ThemeSwitch() {
       // HTML theme do Bootstrap 5.3+
       document.documentElement.setAttribute("data-bs-theme", isDark ? "dark" : "light");
 
-      // Atualizar classes de elementos específicos
-      const updateElements = () => {
-        document.querySelectorAll("table").forEach(el => el.classList.toggle("table-dark", isDark));
-        document.querySelectorAll("table tbody tr").forEach(el => el.classList.toggle("text-light", isDark));
-        document.querySelectorAll(".theme-input").forEach(el => {
-          el.classList.toggle("dark-input", isDark);
-          el.classList.toggle("dark-placeholder", isDark);
-          el.classList.toggle("light-input", !isDark);
-          el.classList.toggle("light-placeholder", !isDark);
-        });
-        document.querySelectorAll(".theme-link").forEach(el => {
-          el.classList.toggle("dark-link", isDark);
-          el.classList.toggle("light-link", !isDark);
-        });
-        document.querySelectorAll(".modal-content").forEach(el => {
-          el.classList.toggle("bg-dark", isDark);
-          el.classList.toggle("text-light", isDark);
-        });
-      };
-
-      updateElements();
-
-      // Mutation observer para aplicar o tema em elementos gerados dinamicamente pelo React
-      const observer = new MutationObserver(() => updateElements());
-      observer.observe(document.body, { childList: true, subtree: true });
-
-      return () => observer.disconnect();
+      return () => {};
     };
 
     const savedTheme = localStorage.getItem("theme");

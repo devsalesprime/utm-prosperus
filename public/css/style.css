@@ -50,6 +50,22 @@ body.bg-dark,
   --sp-border: #374151;
 }
 
+[data-bs-theme="dark"] input,
+[data-bs-theme="dark"] select,
+[data-bs-theme="dark"] textarea,
+[data-bs-theme="dark"] .form-control {
+    background-color: var(--sp-bg-secondary) !important;
+    color: var(--sp-text-primary) !important;
+    border-color: var(--sp-border) !important;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+[data-bs-theme="dark"] input::placeholder,
+[data-bs-theme="dark"] textarea::placeholder {
+    color: var(--sp-text-muted) !important;
+}
+
+
 /* ===========================================
    URL Preview Card
    =========================================== */
