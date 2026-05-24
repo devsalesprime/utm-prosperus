@@ -360,7 +360,9 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_approved` tinyint(1) DEFAULT '0',
   `is_admin` tinyint(1) DEFAULT '0',
-  `status` enum('pendente','aprovado') COLLATE utf8_unicode_ci DEFAULT 'pendente'
+  `status` enum('pendente','aprovado') COLLATE utf8_unicode_ci DEFAULT 'pendente',
+  `reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reset_expires_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

@@ -25,6 +25,26 @@ export async function register(name: string, email: string, password: string): P
   return res.json();
 }
 
+export async function forgotPassword(email: string): Promise<{ success: boolean; message: string }> {
+  const res = await fetch(`${API_BASE}/auth.php`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ action: "forgot_password", email }),
+  });
+  return res.json();
+}
+
+export async function resetPassword(token: string, password: string): Promise<{ success: boolean; message: string }> {
+  const res = await fetch(`${API_BASE}/auth.php`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ action: "reset_password", token, password }),
+  });
+  return res.json();
+}
+
 export async function logout(): Promise<void> {
   await fetch(`${API_BASE}/auth.php`, {
     method: "POST",
