@@ -581,3 +581,40 @@ body:not(.bg-dark) .ds-day__link { color: #7A621F; }
 .ds-notice > i { color: #CA9A43; }
 .ds-notice__cta { margin-left: auto; }
 @media (max-width: 575.98px) { .ds-notice__cta { margin-left: 0; width: 100%; } }
+
+/* ---- Modal de login: ilha clara nos dois temas ----
+   O formulario do modal tem fundo branco fixo (componentes.css). A regra
+   geral do modo escuro pintava o titulo "Logar" de Branco Essencia, que
+   some sobre branco, e dava ao campo fundo navy sobre painel branco.
+   Aqui o painel claro fala em cores de painel claro, seja qual for o
+   tema em volta. O lado navy do modal ("Seja bem-vindo") nao muda. */
+body.theme-prosperus-club .modal form h1,
+body.dark-active.theme-prosperus-club .modal form h1,
+body.bg-dark.theme-prosperus-club .modal form h1 {
+  color: #031A2B !important;
+  border-bottom-color: #CA9A43;
+}
+body.theme-prosperus-club .modal form .form-control,
+body.bg-dark.theme-prosperus-club .modal form .form-control {
+  background-color: #F7FAFC;
+  border: 1px solid rgba(3, 26, 43, 0.15);
+  color: #1A1A1A;
+  border-radius: 8px;
+}
+body.theme-prosperus-club .modal form .form-control::placeholder { color: #61707C; }
+body.theme-prosperus-club .modal form .form-control:focus {
+  border-color: #CA9A43;
+  box-shadow: 0 0 0 0.2rem rgba(202, 154, 67, 0.25);
+}
+body.bg-dark.theme-prosperus-club .modal form p,
+body.bg-dark.theme-prosperus-club .modal form a,
+body.bg-dark.theme-prosperus-club .modal form span,
+body.bg-dark.theme-prosperus-club .modal form label {
+  color: #45525E;
+}
+/* botao de acao do painel claro: navy da marca, texto claro */
+body.theme-prosperus-club .modal form button:not(.ghost) {
+  background: #031A2B;
+  border-color: #031A2B;
+  color: #FCF7F0;
+}
