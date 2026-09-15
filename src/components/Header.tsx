@@ -43,14 +43,14 @@ export default function Header({ onShowLoginModal }: Props) {
         <div className="z-3 float-md-none float-sm-end text-end mx-2 mb-3">
           <span className="me-3">Usuário: {session.username}</span>
           {session.is_admin && (
-            <Link href="/admin" className="btn btn-success btn-sm me-2">
-              <i className="bi bi-gear"></i> Painel Admin
+            <Link href="/admin" className="btn btn-sm ds-nav me-2">
+              <i className="bi bi-gear me-1" aria-hidden="true"></i>Painel admin
             </Link>
           )}
-          <Link href="/analytics" className="btn btn-primary btn-sm me-2">
-            <i className="bi bi-graph-up me-1"></i>Analytics
+          <Link href="/analytics" className="btn btn-sm ds-nav me-2">
+            <i className="bi bi-graph-up me-1" aria-hidden="true"></i>Analytics
           </Link>
-          <button onClick={() => logout()} className="btn btn-danger btn-sm">Sair</button>
+          <button onClick={() => logout()} className="btn btn-sm ds-nav ds-nav-sair">Sair</button>
         </div>
       )}
 

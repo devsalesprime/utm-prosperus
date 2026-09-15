@@ -108,9 +108,9 @@ export default function AdminPage() {
                     </td>
                     <td>
                       {user.is_admin ? (
-                        <span className="badge bg-primary">Administrador</span>
+                        <span className="badge ds-badge-admin">Administrador</span>
                       ) : (
-                        <span className="badge bg-secondary">Usuário</span>
+                        <span className="badge ds-badge-neutro">Usuário</span>
                       )}
                     </td>
                     <td className="text-end">
@@ -119,17 +119,19 @@ export default function AdminPage() {
                           <button 
                             className="btn btn-sm btn-success" 
                             onClick={() => handleApprove(user.id)}
-                            title="Aprovar Usuário"
+                            title="Aprovar usuário"
+                            aria-label={`Aprovar ${user.name}`}
                           >
-                            <i className="bi bi-check-lg"></i>
+                            <i className="bi bi-check-lg" aria-hidden="true"></i>
                           </button>
                         )}
                         <button 
                           className={`btn btn-sm ${user.is_admin ? 'btn-outline-danger' : 'btn-outline-primary'}`}
                           onClick={() => handleToggleAdmin(user.id, user.is_admin)}
-                          title={user.is_admin ? "Remover Admin" : "Tornar Admin"}
+                          title={user.is_admin ? "Remover admin" : "Tornar admin"}
+                          aria-label={user.is_admin ? `Remover privilegio de admin de ${user.name}` : `Tornar ${user.name} admin`}
                         >
-                          <i className={`bi ${user.is_admin ? 'bi-arrow-down' : 'bi-arrow-up'}`}></i>
+                          <i className={`bi ${user.is_admin ? 'bi-arrow-down' : 'bi-arrow-up'}`} aria-hidden="true"></i>
                         </button>
                       </div>
                     </td>

@@ -288,3 +288,44 @@ body.dark-active.theme-prosperus-club .ds-legend {
    Bootstrap: azul, verde, amarelo e ciano na mesma tela, quatro sistemas
    de cor disputando com o ouro. */
 .ds-icon { color: #CA9A43; }
+
+/* ---- Navegacao do topo ----
+   Eram tres utilitarias saturadas do Bootstrap lado a lado: verde para
+   o painel, azul para analytics, vermelho para sair. Tres cores fortes
+   disputando com o ouro, e nenhuma delas dizia nada sobre a acao.
+   Viram o mesmo botao discreto; so Sair guarda um sinal proprio,
+   porque e a unica que tira voce de onde esta. */
+.ds-nav {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-main);
+  border-radius: 8px;
+  font-weight: 600;
+}
+.ds-nav:hover {
+  border-color: #CA9A43;
+  color: var(--color-text-main);
+  background: rgba(202, 154, 67, 0.10);
+}
+.ds-nav-sair:hover {
+  border-color: #B23A36;
+  background: rgba(178, 58, 54, 0.12);
+}
+
+/* ---- Crachas ----
+   "Administrador" nao e um estado, e uma autoridade — e no vocabulario
+   desta marca autoridade se diz em ouro. Estava em azul de utilitaria,
+   a mesma familia que o app usa para outra coisa. "Aprovado" e
+   "Pendente" seguem como estado e mantem a semantica de status. */
+.ds-badge-admin {
+  background: transparent;
+  border: 1px solid #CA9A43;
+  color: #CA9A43;
+  font-weight: 600;
+}
+.ds-badge-neutro {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
