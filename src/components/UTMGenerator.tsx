@@ -196,7 +196,7 @@ export default function UTMGenerator({ onSuccess }: Props) {
 
         {/* Campaign */}
         <fieldset className="mb-3">
-          <legend className="form-label p5 d-block estrutura rounded-end-0 fs-6 float-none"><i className="bi bi-person me-1"></i> Canais:</legend>
+          <legend className="ds-legend"><i className="bi bi-person me-1"></i> Canais:</legend>
           <div className="row row-cols-2 row-cols-md-4 row-cols-lg-8 g-2">
             {["Sales-Prime", "Dani-Martins", "Prosperus", "Lumiere", "Prime", "DMCast", "Joel-Jota", "PodCast"].map(c => {
               const idMap: Record<string, string> = {
@@ -217,13 +217,13 @@ export default function UTMGenerator({ onSuccess }: Props) {
 
         {/* Content Select */}
         <fieldset className="mb-3">
-          <legend className="form-label p5 d-block estrutura rounded-end-0 fs-6 float-none"><i className="bi bi-diagram-3 me-1"></i> Origem / Fonte:</legend>
+          <legend className="ds-legend"><i className="bi bi-diagram-3 me-1"></i> Origem / Fonte:</legend>
           <div className="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-2">
             {[
               {v: "TP", l: "Mídia Paga (TP)"}, {v: "TO", l: "Mídia Orgânica (TO)"}, {v: "SEM", l: "Pesquisa Paga (SEM)"},
               {v: "COMM", l: "Comercial"}, {v: "SDR", l: "SDR"}, {v: "SSELL", l: "Social Selling"},
               {v: "CS", l: "Suporte"}, {v: "TJJ", l: "Time Joel Jota"}, {v: "MO", l: "Mídia Offline"},
-              {v: "TV", l: "Mídia Televisiva"}, {v: "APP", l: "APP Mobile"}, {v: "WEBINAR", l: "WEBINAR"}
+              {v: "TV", l: "Mídia Televisiva"}, {v: "APP", l: "APP Mobile"}, {v: "WEBINAR", l: "Webinar"}
             ].map(c => (
               <div className="col" key={c.v}>
                 <input type="radio" className="btn-check" id={`content_${c.v.toLowerCase()}`} name="contentSelect" value={c.v} checked={contentSelect === c.v} onChange={() => setContentSelect(c.v)} disabled={isDisabled} />
@@ -302,7 +302,7 @@ export default function UTMGenerator({ onSuccess }: Props) {
         {/* Source */}
         {!hideSourceMedium && (
           <fieldset className="mb-3">
-            <legend className="form-label p5 d-block estrutura rounded-end-0 fs-6 float-none"><i className="bi bi-menu-up me-1"></i> Source:</legend>
+            <legend className="ds-legend"><i className="bi bi-menu-up me-1"></i> Source:</legend>
             <div className="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-2">
               {["ig", "yt", "in", "tktk", "thrd", "spot", "wpp", "appl", "amz", "dzr", "email", "site"].map(s => {
                 const meta = sourceMeta[s];

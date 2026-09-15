@@ -111,3 +111,175 @@ h1, h2, h3, .h1, .h2, .h3 {
     border-top-right-radius: 0;
   }
 }
+
+/* =========================================================
+   MODO ESCURO — SISTEMA "LUXURY" DO APP PROSPERUS CLUB
+
+   Referencia: /var/www/prosperus-club-app
+     docs/DESIGN_SYSTEM.md · utils/designTokens.ts · index.css (@theme)
+   que por sua vez sai do brand guide oficial (pag. 18-20).
+
+   Tres decisoes, e o resto e consequencia:
+
+   1. OURO E ESCASSO. O brand guide da ao ouro 20-25%. Hoje o app pinta
+      de ouro todo titulo e todo rotulo de secao, entao ouro nao
+      significa mais nada. Aqui ele marca duas coisas: o que esta
+      selecionado e a acao principal. Titulo vai para Branco Essencia.
+   2. NAVY, NAO PRETO. O fundo era #000 com card #0A141A: preto sobre
+      preto nao produz elevacao. Passa a Azul Profundo com a caixa um
+      passo mais escura e um traco de verdade entre as duas.
+   3. O RAIO DIZ O QUE A COISA E. Chip 10, input e botao 8, card 12,
+      modal 16 — a escala do app do clube, em vez de um raio unico.
+   ========================================================= */
+
+body.bg-dark.theme-prosperus-club,
+body.dark-active.theme-prosperus-club {
+  --color-bg-main: #031A2B;   /* Azul Profundo — o chao */
+  --color-bg-card: #031726;   /* Caixa: card, input, tabela */
+  --color-border:  #052B48;   /* Traco */
+  --color-text-main: #FCF7F0; /* Branco Essencia */
+  --color-text-muted: #95A4B4;
+  --color-primary: #FCF7F0;
+  --color-secondary: #123F5B; /* Azul Lideranca */
+  --color-accent: #FFDA71;    /* Ouro Vivo */
+  --color-accent-hover: #CA9A43; /* Ouro Nobre */
+  --color-inactive: #152938;
+  --ag-glass-bg: #031726;
+  --ag-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.40);
+  --ag-shadow-md: 0 12px 28px -16px rgba(0, 0, 0, 0.70);
+  --ag-shadow-lg: 0 32px 64px -28px rgba(0, 0, 0, 0.80);
+}
+
+/* tema.css pinta TODO titulo do modo escuro com --primary-color, que la
+   e o laranja do Sales Prime, e ainda usa !important. E por isso que
+   "Painel Administrativo" e "Analytics Dashboard" saem laranja mesmo com
+   o tema Prosperus ativo. Nome de variavel parecido, valor de outra
+   marca. Aqui o titulo volta para Branco Essencia. */
+body.dark-active.theme-prosperus-club h1,
+body.dark-active.theme-prosperus-club h2,
+body.dark-active.theme-prosperus-club h3,
+body.dark-active.theme-prosperus-club h4,
+body.dark-active.theme-prosperus-club h5,
+body.dark-active.theme-prosperus-club h6,
+body.bg-dark.theme-prosperus-club h1,
+body.bg-dark.theme-prosperus-club h2,
+body.bg-dark.theme-prosperus-club h3 {
+  color: var(--color-text-main) !important;
+}
+
+/* O traco de autoridade abaixo do titulo: Ouro Nobre, nao o laranja
+   cravado a mao em base.css. */
+body.theme-prosperus-club h1,
+body.theme-prosperus-club h2 {
+  border-bottom-color: #CA9A43;
+}
+
+/* ---- Botao ----
+   componentes.css poe Roboto e caixa alta em todo .btn. Roboto nao esta
+   no brand guide e caixa alta e grito: marca de luxo fala baixo. */
+body.theme-prosperus-club .btn,
+body.theme-prosperus-club .ag-btn-accent,
+body.theme-prosperus-club .ag-btn-outline {
+  font-family: var(--font-body, 'Manrope', system-ui, sans-serif);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Acao principal: o unico gradiente dourado da tela. */
+body.theme-prosperus-club .ag-btn-accent {
+  background: linear-gradient(135deg, #FFDA71, #CA9A43);
+  color: #031A2B;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+/* ---- Superficies em modo escuro ---- */
+body.bg-dark.theme-prosperus-club .ag-card,
+body.bg-dark.theme-prosperus-club .ag-glass,
+body.bg-dark.theme-prosperus-club .card,
+body.bg-dark.theme-prosperus-club .modal-content {
+  background: var(--color-bg-card) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 12px;
+  backdrop-filter: none;
+}
+
+body.bg-dark.theme-prosperus-club .form-control,
+body.bg-dark.theme-prosperus-club .form-select,
+body.bg-dark.theme-prosperus-club .input-group-text {
+  background-color: var(--color-bg-card);
+  border-color: var(--color-border);
+  color: var(--color-text-main);
+  border-radius: 8px;
+}
+body.bg-dark.theme-prosperus-club .form-control::placeholder {
+  color: var(--color-text-off, #95A4B4);
+}
+
+/* Opcao nao selecionada tem fundo proprio: sem isso o botao desaparece
+   no chao e a grade de 12 vira um campo de retangulos invisiveis. */
+body.bg-dark.theme-prosperus-club .btn-check + .btn {
+  background-color: #152938;
+  border-color: var(--color-border);
+  color: var(--color-text-main);
+  border-radius: 10px;
+}
+body.bg-dark.theme-prosperus-club .btn-check:checked + .btn {
+  border-color: #FFDA71;
+}
+
+/* ---- Tabela de links ----
+   E a tela mais densa do sistema: 317 linhas de URL longa. Zebra suave
+   para o olho nao perder a linha, cabecalho preso no topo, e o URL em
+   monoespacada porque ali distinguir l de 1 e funcional, nao enfeite. */
+body.bg-dark.theme-prosperus-club .table-wrapper,
+body.bg-dark.theme-prosperus-club .ag-table-wrapper,
+body.bg-dark.theme-prosperus-club .table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--color-text-main);
+  --bs-table-border-color: var(--color-border);
+}
+body.bg-dark.theme-prosperus-club .table > tbody > tr:nth-of-type(odd) > * {
+  background-color: rgba(5, 43, 72, 0.22);
+}
+body.bg-dark.theme-prosperus-club .table > tbody > tr:hover > * {
+  background-color: rgba(255, 218, 113, 0.07);
+}
+body.theme-prosperus-club .table-wrapper th,
+body.theme-prosperus-club .ag-table-wrapper th,
+body.theme-prosperus-club .table > thead > tr > th {
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-body, 'Manrope', sans-serif);
+  font-weight: 600;
+  color: var(--color-text-muted) !important;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--color-bg-card) !important;
+}
+
+/* ---- Rotulo que nomeia um grupo ----
+   Mesma colisao de nome do titulo: tema.css pinta .form-label do modo
+   escuro com --primary-color, o laranja do Sales Prime. Era isso que
+   deixava "Canais:", "Origem / Fonte:" e "Source:" gritando em laranja,
+   disputando atencao com o ouro. Rotulo estrutural fala baixo. */
+.ds-legend {
+  display: block;
+  float: none;
+  width: 100%;
+  font-family: var(--font-body, 'Manrope', system-ui, sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-muted);
+}
+body.bg-dark.theme-prosperus-club .ds-legend,
+body.dark-active.theme-prosperus-club .ds-legend {
+  color: #95A4B4;
+}
+.ds-legend > i {
+  color: #CA9A43; /* Ouro Nobre: o icone e o traco de autoridade */
+  margin-right: 0.35rem;
+}
