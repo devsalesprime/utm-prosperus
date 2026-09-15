@@ -112,16 +112,16 @@ export default function UTMTable() {
       <div className="table-wrapper">
         <table className="table">
           <thead>
-            <tr style={{ textTransform: "uppercase", fontSize: "0.75rem", color: "var(--text-muted)" }}>
+            <tr style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
               <th style={{ width: "60px" }}>QR Code</th>
-              <th style={{ width: "35%" }}><i className="bi bi-link-45deg me-1"></i> Link Original com UTM</th>
-              <th><i className="bi bi-link me-1"></i> Link Encurtado</th>
-              <th><i className="bi bi-hand-index me-1"></i> Clicks</th>
-              <th><i className="bi bi-toggle-on me-1"></i> Status</th>
-              <th><i className="bi bi-trash me-1"></i> Excluir</th>
-              <th><i className="bi bi-calendar me-1"></i> Data</th>
-              <th><i className="bi bi-chat-left-text me-1"></i> Comentário</th>
-              <th><i className="bi bi-person me-1"></i> Usuário</th>
+              <th style={{ width: "35%" }}>Link original com UTM</th>
+              <th>Link encurtado</th>
+              <th>Cliques</th>
+              <th>Status</th>
+              <th>Excluir</th>
+              <th>Data</th>
+              <th>Comentário</th>
+              <th>Usuário</th>
             </tr>
           </thead>
           <tbody>
@@ -251,6 +251,54 @@ export default function UTMTable() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Abaixo de 992px a tabela de nove colunas nao cabe. Cada UTM vira
+          um card: link curto em destaque, comentario como titulo humano,
+          URL longa truncada, e as acoes no rodape. O QR sai do card e
+          vai para o modal que ja existe, para nao pintar 20 canvases. */}
+      <div className="ds-cards" aria-label="Lista de UTMs">
+        {loading ? (
+          Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="ds-utm-card"><div className="skeleton" style={{ height: 18, width: "60%" }} /><div className="skeleton mt-2" style={{ height: 14, width: "90%" }} /></div>
+          ))
+        ) : utms.length === 0 ? (
+          <div className="empty-state"><p>Nenhuma UTM encontrada</p></div>
+        ) : utms.map(utm => (
+          <article key={`c${utm.id}`} className="ds-utm-card">
+            <header className="ds-utm-card__top">
+              <a className="ds-utm-card__short" href={`https://prosperusclub.com.br/${utm.shortened_url}`} target="_blank" rel="noreferrer">
+                prosperusclub.com.br/{utm.shortened_url}
+              </a>
+              <button type="button" className="btn btn-sm ds-nav" onClick={() => copyLink(utm)} aria-label="Copiar link encurtado">
+                <i className={`bi ${copiedId === utm.id ? "bi-check2" : "bi-clipboard"}`} aria-hidden="true"></i>
+              </button>
+            </header>
+            <p className="ds-utm-card__comment">{utm.comment || "Sem comentário"}</p>
+            <p className="ds-utm-card__long">{utm.long_url}</p>
+            <dl className="ds-utm-card__meta">
+              <div><dt>Cliques</dt><dd>{utm.clicks ?? 0}</dd></div>
+              <div><dt>Data</dt><dd>{formatDate(utm.generation_date)}</dd></div>
+              <div><dt>Por</dt><dd>{utm.username ? utm.username.split(" ").slice(0, 2).join(" ") : "-"}</dd></div>
+            </dl>
+            <footer className="ds-utm-card__actions">
+              <label className="form-check form-switch m-0 d-flex align-items-center gap-2">
+                <input className="form-check-input m-0" type="checkbox" role="switch" checked={utm.is_enabled} onChange={() => handleToggle(utm)} />
+                <span className="small">{utm.is_enabled ? "Ativa" : "Desativada"}</span>
+              </label>
+              <div className="d-flex gap-2">
+                <button type="button" className="btn btn-sm ds-nav" onClick={() => setQrModalUrl(`https://prosperusclub.com.br/${utm.shortened_url}`)}>
+                  <i className="bi bi-qr-code me-1" aria-hidden="true"></i>QR
+                </button>
+                {session?.is_admin && (
+                  <button type="button" className="btn btn-sm ds-nav ds-nav-sair" onClick={() => { setDeleteId(utm.id); setDeleteError(""); }} aria-label="Excluir UTM">
+                    <i className="bi bi-trash" aria-hidden="true"></i>
+                  </button>
+                )}
+              </div>
+            </footer>
+          </article>
+        ))}
       </div>
 
       {/* Pagination */}

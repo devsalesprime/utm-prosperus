@@ -109,13 +109,14 @@ export default function AnalyticsPage() {
       <Header />
 
       <div className="container mt-4 mb-5">
-        <div className="dashboard-header d-flex flex-wrap justify-content-between align-items-center mb-4">
-          <div>
-            <h1><i className="bi bi-graph-up-arrow me-2"></i>Analytics Dashboard</h1>
-            <p className="text-muted mb-0">Métricas de performance das UTMs</p>
+        <div className="ds-page-head">
+          <span className="ds-page-head__icon" aria-hidden="true"><i className="bi bi-graph-up-arrow"></i></span>
+          <div className="ds-page-head__text">
+            <h1>Analytics Dashboard</h1>
+            <p>Métricas de performance das UTMs</p>
           </div>
-          <div className="d-flex gap-2">
-            <div className="btn-group period-filter">
+          <div className="ds-page-head__aside">
+            <div className="btn-group period-filter" role="group" aria-label="Período">
               {[7, 15, 30, 90, 365].map(p => (
                 <button
                   key={p}
@@ -132,22 +133,16 @@ export default function AnalyticsPage() {
         {/* KPI Cards */}
         <div className="row g-3 mb-4">
           {[
-            { label: "Total UTMs", value: data?.kpis?.total_utms, icon: "bi-link-45deg", color: "primary" },
-            { label: "Total Cliques", value: data?.kpis?.total_clicks, icon: "bi-cursor-fill", color: "success" },
-            { label: "Média/UTM", value: Math.round(data?.kpis?.avg_clicks || 0), icon: "bi-bar-chart-fill", color: "warning" },
-            { label: "UTMs Ativas", value: data?.kpis?.active_utms, icon: "bi-check-circle-fill", color: "info" }
+            { label: "Total de UTMs", value: data?.kpis?.total_utms, icon: "bi-link-45deg" },
+            { label: "Total de cliques", value: data?.kpis?.total_clicks, icon: "bi-cursor-fill" },
+            { label: "Média por UTM", value: Math.round(data?.kpis?.avg_clicks || 0), icon: "bi-bar-chart-fill" },
+            { label: "UTMs ativas", value: data?.kpis?.active_utms, icon: "bi-check-circle-fill" }
           ].map((kpi, idx) => (
             <div key={idx} className="col-6 col-md-3">
-              <div className={`ag-card kpi-card kpi-${kpi.color}`}>
-                <div className="card-body">
-                  <div className="d-flex justify-content-between align-items-start">
-                    <div>
-                      <p className="kpi-label mb-0" style={{fontSize: "0.85rem", opacity: 0.8}}>{kpi.label}</p>
-                      <h4 className="kpi-value fw-bold mt-1 mb-0">{loading ? "..." : (kpi.value || 0).toLocaleString('pt-BR')}</h4>
-                    </div>
-                    <div className="kpi-icon fs-4"><i className={`bi ${kpi.icon}`}></i></div>
-                  </div>
-                </div>
+              <div className="ag-card ds-kpi">
+                <div className="ds-kpi__label">{kpi.label}</div>
+                <div className="ds-kpi__value">{loading ? "…" : (kpi.value || 0).toLocaleString('pt-BR')}</div>
+                <i className={`bi ${kpi.icon} ds-kpi__icon`} aria-hidden="true"></i>
               </div>
             </div>
           ))}
@@ -276,7 +271,10 @@ export default function AnalyticsPage() {
 
         {/* Minhas UTMs */}
         <div className="mt-5">
-          <h2 className="mb-4"><i className="bi bi-list-ul me-2"></i>Todas as UTMs</h2>
+          <div className="ds-page-head">
+            <span className="ds-page-head__icon" aria-hidden="true"><i className="bi bi-list-ul"></i></span>
+            <div className="ds-page-head__text"><h2>Todas as UTMs</h2></div>
+          </div>
           <div className="ag-card p-3">
             <UTMTable />
           </div>
