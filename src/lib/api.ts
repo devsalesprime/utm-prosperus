@@ -1,5 +1,5 @@
 // Funções de chamada para a API PHP Backend
-import type { AuthSession, CreateUTMPayload, CreateUTMResponse, DashboardData, UTM, AdminUser } from "@/types/utm";
+import type { AuthSession, CreateUTMPayload, CreateUTMResponse, DashboardData, UTM, AdminUser, DayClicks } from "@/types/utm";
 
 const API_BASE = "/api";
 
@@ -116,6 +116,15 @@ export async function getDashboardData(period = 30): Promise<DashboardData> {
     credentials: "include",
     cache: "no-store",
   });
+  return res.json();
+}
+
+export async function getDayClicks(date: string): Promise<DayClicks> {
+  const res = await fetch(`${API_BASE}/dashboard_day.php?date=${encodeURIComponent(date)}`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`Falha ao carregar o dia ${date}`);
   return res.json();
 }
 

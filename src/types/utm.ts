@@ -88,6 +88,22 @@ export interface DashboardData {
   period: number;
 }
 
+export interface DayClickUTM {
+  id: number;
+  shortened_url: string;
+  comment: string | null;
+  username: string | null;
+  clicks_day: number;
+  campaign: string;
+  source: string;
+}
+
+export interface DayClicks {
+  date: string;
+  total: number;
+  utms: DayClickUTM[];
+}
+
 export interface AdminUser {
   id: number;
   name: string;

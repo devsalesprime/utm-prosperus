@@ -497,3 +497,67 @@ body:not(.bg-dark) .ds-utm-card__short { color: #7A621F; } /* ouro de texto no c
 }
 /* icone de titulo de secao: um pouco mais de ar entre icone e texto */
 .ds-icon.me-2 { margin-right: 0.625rem !important; }
+
+/* ---- Detalhamento de um dia da tendencia ----
+   Clicar num ponto da curva abre, abaixo do grafico, a lista das UTMs
+   que receberam clique naquele dia. A barra em cada linha e proporcao
+   sobre o total do dia: o numero ja esta escrito, a barra so ajuda o
+   olho a ordenar. */
+.ds-day {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border);
+}
+.ds-day__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.ds-day__title { font-weight: 700; font-size: 0.9375rem; margin: 0; }
+.ds-day__total { color: var(--color-text-muted); font-size: 0.8125rem; }
+.ds-day__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-height: 320px; overflow: auto; }
+.ds-day__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 12px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(5, 43, 72, 0.22);
+}
+body:not(.bg-dark) .ds-day__row { background: rgba(3, 26, 43, 0.05); }
+.ds-day__link {
+  font-weight: 700;
+  color: #FFDA71;
+  text-decoration: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8125rem;
+}
+body:not(.bg-dark) .ds-day__link { color: #7A621F; }
+.ds-day__desc {
+  grid-column: 1;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ds-day__n {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  min-width: 3ch;
+}
+.ds-day__bar {
+  grid-column: 1 / -1;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #FFDA71, #CA9A43);
+  transform-origin: left;
+}
+.ds-day__hint { font-size: 0.8125rem; color: var(--color-text-muted); margin: 8px 0 0; }
+.ds-day__close { margin-left: auto; }

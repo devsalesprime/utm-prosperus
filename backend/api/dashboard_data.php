@@ -18,7 +18,7 @@ if (!isset($_SESSION['username'])) {
 require dirname(__DIR__) . '/includes/db.php';
 
 $period = isset($_GET['period']) ? (int) $_GET['period'] : 30;
-$validPeriods = [7, 30, 90, 365];
+$validPeriods = [7, 15, 30, 90, 365];
 if (!in_array($period, $validPeriods)) {
     $period = 30;
 }
@@ -73,10 +73,10 @@ try {
     $clicksFromTable = [];
     try {
         $stmt = $pdo->prepare("
-            SELECT DATE(clicked_at) as click_date, COUNT(*) as click_count
+            SELECT DATE(created_at) as click_date, COUNT(*) as click_count
             FROM clicks
-            WHERE clicked_at >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
-            GROUP BY DATE(clicked_at)
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
+            GROUP BY DATE(created_at)
             ORDER BY click_date ASC
         ");
         $stmt->execute([$period]);

@@ -4,8 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import Header from "@/components/Header";
 import ThemeSwitch from "@/components/ThemeSwitch";
 import UTMTable from "@/components/UTMTable";
-import { getDashboardData } from "@/lib/api";
-import type { DashboardData } from "@/types/utm";
+import { getDashboardData, getDayClicks } from "@/lib/api";
+import type { DashboardData, DayClicks } from "@/types/utm";
 import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
 import {
@@ -74,6 +74,21 @@ export default function AnalyticsPage() {
   const router = useRouter();
   const [data, setData] = useState<DashboardData | null>(null);
   const [period, setPeriod] = useState(30);
+
+  // Detalhamento de um dia da curva: quais UTMs receberam clique e quantos.
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const [dayData, setDayData] = useState<DayClicks | null>(null);
+  const [dayLoading, setDayLoading] = useState(false);
+  const [dayError, setDayError] = useState("");
+  const abrirDia = useCallback(async (date: string) => {
+    setSelectedDay(date); setDayLoading(true); setDayError(""); setDayData(null);
+    try { setDayData(await getDayClicks(date)); }
+    catch { setDayError("Não foi possível carregar este dia."); }
+    finally { setDayLoading(false); }
+  }, []);
+  useEffect(() => { setSelectedDay(null); setDayData(null); }, [period]);
+  const fmtDia = (iso: string) =>
+    new Date(iso + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -195,16 +210,82 @@ export default function AnalyticsPage() {
                         borderColor: '#FFDA71',
                         backgroundColor: 'rgba(255, 218, 113, 0.14)',
                         borderWidth: 2,
-                        pointRadius: 0,
-                        pointHoverRadius: 5,
+                        // o ponto so aparece no dia selecionado; o resto da curva fica limpa
+                        pointRadius: (ctx) => data.clicks_trend[ctx.dataIndex]?.click_date === selectedDay ? 6 : 0,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#FFDA71',
+                        pointBorderColor: '#031A2B',
+                        pointBorderWidth: 2,
                         fill: true,
                         tension: 0.4
                       }]
                     }}
-                    options={{ maintainAspectRatio: false, plugins: { legend: { display: false } } }}
+                    options={{
+                      maintainAspectRatio: false,
+                      // qualquer ponto da coluna do dia conta como o dia: nao precisa
+                      // acertar o pixel da linha
+                      interaction: { mode: 'index', intersect: false },
+                      onClick: (_evt, elements) => {
+                        const idx = elements[0]?.index;
+                        if (idx === undefined) return;
+                        const d = data.clicks_trend[idx]?.click_date;
+                        if (d) abrirDia(d);
+                      },
+                      onHover: (evt, elements) => {
+                        const el = evt.native?.target as HTMLElement | null;
+                        if (el) el.style.cursor = elements.length ? 'pointer' : 'default';
+                      },
+                      plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                          callbacks: {
+                            label: (item) => `${item.parsed.y} cliques`,
+                            footer: () => 'Clique para ver as UTMs',
+                          },
+                        },
+                      },
+                    }}
                   />
                 )}
               </div>
+
+              {!selectedDay && !loading && (
+                <p className="ds-day__hint">Clique num ponto da curva para ver quais UTMs receberam clique naquele dia.</p>
+              )}
+              {selectedDay && (
+                <div className="ds-day" role="region" aria-live="polite" aria-label="UTMs clicadas no dia">
+                  <div className="ds-day__head">
+                    <p className="ds-day__title">Cliques em {fmtDia(selectedDay)}</p>
+                    {dayData && (
+                      <span className="ds-day__total">
+                        {dayData.total.toLocaleString('pt-BR')} cliques em {dayData.utms.length} UTM{dayData.utms.length === 1 ? '' : 's'}
+                      </span>
+                    )}
+                    <button type="button" className="btn btn-sm ds-nav ds-day__close" onClick={() => { setSelectedDay(null); setDayData(null); }}>
+                      Fechar
+                    </button>
+                  </div>
+                  {dayLoading && <p className="ds-day__hint">Carregando…</p>}
+                  {dayError && <p className="ds-day__hint" role="alert">{dayError}</p>}
+                  {dayData && dayData.utms.length === 0 && <p className="ds-day__hint">Nenhum clique registrado neste dia.</p>}
+                  {dayData && dayData.utms.length > 0 && (
+                    <ul className="ds-day__list">
+                      {dayData.utms.map(u => (
+                        <li key={u.id} className="ds-day__row">
+                          <a className="ds-day__link" href={`https://prosperusclub.com.br/${u.shortened_url}`} target="_blank" rel="noreferrer">
+                            /{u.shortened_url}
+                          </a>
+                          <span className="ds-day__desc" title={u.comment || ""}>
+                            {u.comment || [u.campaign, u.source].filter(Boolean).join(", ") || "Sem comentário"}
+                          </span>
+                          <span className="ds-day__n">{u.clicks_day}</span>
+                          <span className="ds-day__bar" style={{ transform: `scaleX(${dayData.total ? u.clicks_day / dayData.total : 0})` }} aria-hidden="true"></span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
