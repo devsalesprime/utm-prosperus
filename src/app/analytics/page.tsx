@@ -34,11 +34,40 @@ ChartJS.register(
   Filler
 );
 
+// Paleta categorica do grafico, liderada pelo ouro da marca.
+//
+// Sao SEIS e nao mais: num donut qualquer fatia encosta em qualquer
+// outra, entao a checagem que vale e a de todos os pares, nao a de
+// vizinhos. Dentro das familias de cor da marca, seis e o maximo que
+// sobrevive a essa checagem nos dois modos. Com oito, dois dourados
+// ficavam a ΔE 1.9 um do outro: ninguem distingue, nem com visao de
+// cor normal. Validado com scripts/validate_palette.js da skill
+// dataviz (--pairs all, modos claro e escuro).
+//
+// O aviso remanescente de CVD (ΔE 6.5, faixa de piso) so e aceitavel
+// com codificacao secundaria. Ela existe e nao pode ser removida:
+// legenda com rotulo de texto em cada fatia e vao de 2px na cor da
+// superficie separando as fatias.
 const COLORS = [
-  '#3D4F73', '#F2A011', '#059669', '#3B82F6', '#EF4444',
-  '#8B5CF6', '#EC4899', '#14B8A6', '#F97316', '#6366F1',
-  '#84CC16', '#06B6D4', '#D946EF', '#A3A3A3'
+  '#B38D00', '#009F99', '#975AC0', '#686800', '#5590F3', '#006E9A'
 ];
+const COR_OUTROS = '#95A4B4'; // cinza neutro: "Outros" nao e uma identidade
+const MAX_FATIAS = COLORS.length;
+
+// Acima de 8 series a cor deixa de identificar: ninguem casa 15 tons de
+// legenda com 15 fatias. O excedente vira uma fatia "Outros" so.
+function agruparFontes(linhas: { source_name: string; total_clicks: number | string }[]) {
+  const ordenado = [...linhas].sort((a, b) => Number(b.total_clicks) - Number(a.total_clicks));
+  const topo = ordenado.slice(0, MAX_FATIAS);
+  const resto = ordenado.slice(MAX_FATIAS);
+  if (resto.length === 0) return { rotulos: topo.map(d => d.source_name), valores: topo.map(d => Number(d.total_clicks)), temOutros: false };
+  const somaResto = resto.reduce((acc, d) => acc + Number(d.total_clicks), 0);
+  return {
+    rotulos: [...topo.map(d => d.source_name), `Outros (${resto.length})`],
+    valores: [...topo.map(d => Number(d.total_clicks)), somaResto],
+    temOutros: true,
+  };
+}
 
 export default function AnalyticsPage() {
   const { session, loading: authLoading } = useAuth();
@@ -128,15 +157,24 @@ export default function AnalyticsPage() {
         <div className="row g-3 mb-4">
           <div className="col-md-5">
             <div className="ag-card p-3 h-100">
-              <h5 className="mb-3"><i className="bi bi-pie-chart-fill text-primary me-2"></i>Cliques por Fonte</h5>
+              <h5 className="mb-3"><i className="bi bi-pie-chart-fill ds-icon me-2"></i>Cliques por Fonte</h5>
               <div style={{ position: "relative", height: "300px", width: "100%" }}>
                 {!loading && data?.clicks_by_source && (
                   <Doughnut
                     data={{
-                      labels: data.clicks_by_source.map(d => d.source_name),
+                      labels: agruparFontes(data.clicks_by_source).rotulos,
                       datasets: [{
-                        data: data.clicks_by_source.map(d => Number(d.total_clicks)),
-                        backgroundColor: COLORS.slice(0, data.clicks_by_source.length)
+                        data: agruparFontes(data.clicks_by_source).valores,
+                        backgroundColor: (() => {
+                          const g = agruparFontes(data.clicks_by_source);
+                          const cores = COLORS.slice(0, Math.min(MAX_FATIAS, g.valores.length));
+                          return g.temOutros ? [...cores, COR_OUTROS] : cores;
+                        })(),
+                        // vao na cor da superficie: e a separacao fisica
+                        // que a faixa de piso de CVD exige
+                        borderColor: getComputedStyle(document.body)
+                          .getPropertyValue('--color-bg-card').trim() || '#031726',
+                        borderWidth: 2
                       }]
                     }}
                     options={{ maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }}
@@ -147,7 +185,7 @@ export default function AnalyticsPage() {
           </div>
           <div className="col-md-7">
             <div className="ag-card p-3 h-100">
-              <h5 className="mb-3"><i className="bi bi-activity text-success me-2"></i>Tendência de Cliques</h5>
+              <h5 className="mb-3"><i className="bi bi-activity ds-icon me-2"></i>Tendência de Cliques</h5>
               <div style={{ position: "relative", height: "300px", width: "100%" }}>
                 {!loading && data?.clicks_trend && (
                   <Line
@@ -159,8 +197,11 @@ export default function AnalyticsPage() {
                       datasets: [{
                         label: 'Cliques',
                         data: data.clicks_trend.map(d => Number(d.click_count)),
-                        borderColor: '#3D4F73',
-                        backgroundColor: 'rgba(61, 79, 115, 0.1)',
+                        borderColor: '#FFDA71',
+                        backgroundColor: 'rgba(255, 218, 113, 0.14)',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        pointHoverRadius: 5,
                         fill: true,
                         tension: 0.4
                       }]
@@ -177,7 +218,7 @@ export default function AnalyticsPage() {
         <div className="row g-3 mb-5">
           <div className="col-md-8">
             <div className="ag-card p-3 h-100">
-              <h5 className="mb-3"><i className="bi bi-trophy-fill text-warning me-2"></i>Top 10 UTMs</h5>
+              <h5 className="mb-3"><i className="bi bi-trophy-fill ds-icon me-2"></i>Top 10 UTMs</h5>
               <div className="table-responsive">
                 <table className="table table-sm table-hover">
                   <thead>
@@ -207,7 +248,7 @@ export default function AnalyticsPage() {
           </div>
           <div className="col-md-4">
             <div className="ag-card p-3 h-100">
-              <h5 className="mb-3"><i className="bi bi-people-fill text-info me-2"></i>Por Usuário</h5>
+              <h5 className="mb-3"><i className="bi bi-people-fill ds-icon me-2"></i>Por Usuário</h5>
               <div className="table-responsive">
                 <table className="table table-sm table-hover">
                   <thead>

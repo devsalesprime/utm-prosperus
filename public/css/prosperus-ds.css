@@ -283,3 +283,8 @@ body.dark-active.theme-prosperus-club .ds-legend {
   color: #CA9A43; /* Ouro Nobre: o icone e o traco de autoridade */
   margin-right: 0.35rem;
 }
+
+/* Icone que acompanha titulo de secao. Antes eram as utilitarias do
+   Bootstrap: azul, verde, amarelo e ciano na mesma tela, quatro sistemas
+   de cor disputando com o ouro. */
+.ds-icon { color: #CA9A43; }
