@@ -618,3 +618,31 @@ body.theme-prosperus-club .modal form button:not(.ghost) {
   border-color: #031A2B;
   color: #FCF7F0;
 }
+
+/* ---- Modais de confirmacao (.ag-modal: excluir UTM, excluir usuario) ----
+   No escuro, tema.css pintava o rotulo "Senha master" de laranja pela
+   mesma colisao de --primary-color; o Cancelar (btn-ghost) ficava sem
+   contorno e quase invisivel; e a caixa nao tinha o traco do sistema. */
+body.theme-prosperus-club .ag-modal {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+body.dark-active.theme-prosperus-club .ag-modal .form-label,
+body.bg-dark.theme-prosperus-club .ag-modal .form-label {
+  color: var(--color-text-main);
+  font-family: var(--font-body, 'Manrope', sans-serif);
+}
+body.theme-prosperus-club .ag-modal .btn-ghost:not(.btn-icon) {
+  border: 1px solid var(--color-border);
+  color: var(--color-text-main);
+  border-radius: 8px;
+}
+body.theme-prosperus-club .ag-modal .btn-ghost:not(.btn-icon):hover {
+  border-color: #CA9A43;
+  background: rgba(202, 154, 67, 0.10);
+}
+body.theme-prosperus-club .ag-modal .btn-danger {
+  background: #B23A36;
+  border-color: #B23A36;
+  border-radius: 8px;
+}
