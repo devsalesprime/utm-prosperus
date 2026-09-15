@@ -887,7 +887,7 @@ body.dark-active .btn-primary:hover {
     border-color: #0B1426 !important;
 }
 
-#profile_podvender:checked + .btn {
+#profile_dmcast:checked + .btn {
     background-color: #080808 !important;
     color: #D429FF !important;
     border-color: #080808 !important;
@@ -973,7 +973,7 @@ body.dark-active .btn-primary:hover {
 #source_goo + .btn:hover { border-color: #fff; color: #fff; }
 
 #profile_sales + .btn:hover { border-color: #0B1426 !important; background-color: #0B1426 !important; color: #F2A011 !important; }
-#profile_podvender + .btn:hover { border-color: #080808 !important; background-color: #080808 !important; color: #D429FF !important; }
+#profile_dmcast + .btn:hover { border-color: #080808 !important; background-color: #080808 !important; color: #D429FF !important; }
 #profile_prosperus + .btn:hover { border-color: #031A2B !important; background-color: #031A2B !important; color: #FFDA71 !important; }
 #profile_lumiere + .btn:hover { border-color: #0F2C24 !important; background-color: #0F2C24 !important; color: #BDE6F4 !important; }
 #profile_dani + .btn:hover { border-color: #F9F7EF !important; background-color: #F9F7EF !important; color: #A673DD !important; }

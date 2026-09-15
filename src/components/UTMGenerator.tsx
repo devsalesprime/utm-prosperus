@@ -165,10 +165,10 @@ export default function UTMGenerator({ onSuccess }: Props) {
         <div className="input-group mb-3">
           <div className="btn-group w-100" role="radiogroup">
             <span className="input-group-text p5 rounded-end-0"><i className="bi bi-person me-1"></i> Canais:</span>
-            {["Sales-Prime", "Dani-Martins", "Prosperus", "Lumiere", "Prime", "PodVender", "Joel-Jota", "PodCast"].map(c => {
+            {["Sales-Prime", "Dani-Martins", "Prosperus", "Lumiere", "Prime", "DMCast", "Joel-Jota", "PodCast"].map(c => {
               const idMap: Record<string, string> = {
                 "Sales-Prime": "sales", "Dani-Martins": "dani", "Prosperus": "prosperus",
-                "Lumiere": "lumiere", "Prime": "prime", "PodVender": "podvender",
+                "Lumiere": "lumiere", "Prime": "prime", "DMCast": "dmcast",
                 "Joel-Jota": "joel", "PodCast": "podcast"
               };
               const cssId = `profile_${idMap[c]}`;
