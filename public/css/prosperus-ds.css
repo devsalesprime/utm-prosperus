@@ -1,0 +1,113 @@
+/* =========================================================
+   PROSPERUS DESIGN SYSTEM — camada de alinhamento do app UTM
+
+   Fonte da verdade: https://prosperusclub.com.br/brand/prosperus.css
+   ("Sage and Sovereign": Adobe Garamond Pro para titulo,
+    Manrope para corpo e UI, navy + ouro, raios contidos.)
+
+   Estrategia: esta folha e carregada POR ULTIMO e so reescreve
+   tokens que ja existem no tema. Nao reescreve componente nenhum.
+   Para reverter o visual, basta remover o <link> do layout.
+
+   NAO toca nas cores por canal (Sales-Prime, Dani-Martins, DMCast,
+   Joel-Jota...). Aquelas cores codificam identidade de canal, nao
+   decoracao: trocar por ouro apagaria a informacao que elas carregam.
+   ========================================================= */
+
+/* ---- Fonte de titulo da marca, servida pelo dominio da marca ---- */
+@font-face {
+  font-family: 'Adobe Garamond Pro';
+  src: url('https://prosperusclub.com.br/brand/fonts/AGaramondPro-Regular.otf') format('opentype');
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Adobe Garamond Pro';
+  src: url('https://prosperusclub.com.br/brand/fonts/AGaramondPro-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-display: 'Adobe Garamond Pro', 'Cormorant Garamond', Georgia, serif;
+
+  /* Raios da marca: "contidos, quase retos". O tema trazia 8/12/16px. */
+  --ag-radius-sm: 4px;
+  --ag-radius-md: 6px;
+  --ag-radius-lg: 10px;
+
+  /* Sombras tingidas de navy, no lugar do preto neutro. */
+  --ag-shadow-sm: 0 1px 2px rgba(3, 26, 43, 0.06), 0 1px 1px rgba(3, 26, 43, 0.04);
+  --ag-shadow-md: 0 10px 26px -14px rgba(3, 26, 43, 0.22), 0 2px 6px rgba(3, 26, 43, 0.08);
+  --ag-shadow-lg: 0 30px 64px -28px rgba(3, 26, 43, 0.30);
+}
+
+/* Ouro Nobre estava com um digito trocado (#CA9A43); o valor da marca
+   e #C9A43F. Diferenca pequena, mas o token vira referencia. */
+body.theme-prosperus-club {
+  --color-accent-hover: #C9A43F;
+}
+
+/* ---- Tipografia: Garamond so onde a marca manda ----
+   A marca reserva o display para TITULO. Botao, cabecalho de tabela e
+   aba continuam em Manrope: serifa em 13px de UI densa perde legibilidade. */
+h1, h2, h3, .h1, .h2, .h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.22;
+}
+
+/* ---- Foco visivel ----
+   componentes.css remove o outline do botao de modal sem por nada no
+   lugar, e nenhuma folha carregada define :focus-visible. Sem isso quem
+   navega por teclado nao sabe onde esta. Anel em ouro da marca. */
+*:focus-visible {
+  outline: 3px solid var(--color-accent, #FFDA71);
+  outline-offset: 2px;
+  border-radius: var(--ag-radius-sm);
+}
+.modal button:focus-visible {
+  outline: 3px solid var(--color-accent, #FFDA71);
+  outline-offset: 2px;
+}
+/* O input do radio e visualmente escondido pelo Bootstrap (btn-check):
+   o anel precisa aparecer no rotulo, que e o que o usuario ve. */
+.btn-check:focus-visible + .btn {
+  outline: 3px solid var(--color-accent, #FFDA71);
+  outline-offset: 2px;
+}
+
+/* ---- Alvo de toque ----
+   Guia de touch: alvo minimo e 8px de respiro entre alvos. Os grupos de
+   radio ficavam com altura livre e encostavam um no outro. */
+.btn-check + .btn {
+  min-height: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---- Campos em tela estreita ----
+   O padrao input-group poe rotulo e campo lado a lado. Em 390px isso
+   deixa o campo de digitacao com ~175px: da para ver o rotulo ou o que
+   se digita, nao os dois. Abaixo de 576px o rotulo sobe para cima. */
+@media (max-width: 575.98px) {
+  .input-group > .input-group-text.p5 {
+    flex: 0 0 100%;
+    justify-content: flex-start;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .input-group > .input-group-text.p5 + .form-control,
+  .input-group > .input-group-text.p5 + .form-select {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}

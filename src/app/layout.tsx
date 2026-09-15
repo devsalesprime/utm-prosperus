@@ -26,8 +26,10 @@ export default function RootLayout({
         <link rel="stylesheet" href="/css/theme-antigravity.css" />
         <link rel="stylesheet" href="/css/tema.css" />
         <link rel="stylesheet" href="/css/responsivo.css" />
+        {/* Ultimo: so reescreve tokens do design system Prosperus */}
+        <link rel="stylesheet" href="/css/prosperus-ds.css" />
       </head>
-      <body className="theme-sales-prime">
+      <body className="theme-prosperus-club">
         <AuthProvider>{children}</AuthProvider>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
       </body>

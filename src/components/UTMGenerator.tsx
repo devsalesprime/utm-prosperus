@@ -25,6 +25,24 @@ const mediumMap: Record<string, string[]> = {
 };
 const sourceAliases: Record<string, string> = { linkd: 'in', wtt: 'wpp' };
 
+// Nome legivel e icone de cada source. O nome existe para que o botao tenha
+// rotulo de texto: icone sozinho nao e anunciado por leitor de tela nem
+// distingue 'dzr' de 'amz' para quem enxerga.
+const sourceMeta: Record<string, { nome: string; icone: string }> = {
+  ig:    { nome: 'Instagram', icone: 'instagram' },
+  yt:    { nome: 'YouTube',   icone: 'youtube' },
+  in:    { nome: 'LinkedIn',  icone: 'linkedin' },
+  tktk:  { nome: 'TikTok',    icone: 'tiktok' },
+  thrd:  { nome: 'Threads',   icone: 'threads' },
+  spot:  { nome: 'Spotify',   icone: 'spotify' },
+  wpp:   { nome: 'WhatsApp',  icone: 'whatsapp' },
+  appl:  { nome: 'Apple',     icone: 'apple' },
+  amz:   { nome: 'Amazon',    icone: 'amazon' },
+  dzr:   { nome: 'Deezer',    icone: 'music-note-beamed' },
+  email: { nome: 'E-mail',    icone: 'envelope' },
+  site:  { nome: 'Site',      icone: 'globe' },
+};
+
 function normalizeForUtm(text: string) {
   if (!text) return '';
   text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -70,6 +88,7 @@ export default function UTMGenerator({ onSuccess }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<any>(null);
+  const [copied, setCopied] = useState(false);
 
   // Compute final content
   let computedContent = contentSelect;
@@ -118,6 +137,7 @@ export default function UTMGenerator({ onSuccess }: Props) {
     setLoading(false);
     if (res.success && res.data) {
       setResult(res.data);
+      setCopied(false);
       onSuccess?.(res.data.short_code);
     } else {
       setError(res.message || "Erro ao criar UTM");
@@ -142,17 +162,30 @@ export default function UTMGenerator({ onSuccess }: Props) {
   return (
     <div className="container mt-2">
       {result && (
-        <div className="alert alert-success d-flex justify-content-between align-items-center">
-          <div>
+        <div className="alert alert-success d-flex justify-content-between align-items-center gap-3" role="status" aria-live="polite">
+          <div className="text-break">
             <strong>UTM Gerada!</strong><br />
-            <a href={result.short_url} target="_blank">{result.short_url}</a>
+            <a href={result.short_url} target="_blank" rel="noreferrer">{result.short_url}</a>
           </div>
-          <button className="btn btn-sm btn-outline-success" onClick={() => navigator.clipboard.writeText(result.short_url)}>
-            Copiar
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-success flex-shrink-0"
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(result.short_url);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              } catch {
+                setError("Nao foi possivel copiar. Copie o link manualmente.");
+              }
+            }}
+          >
+            <i className={`bi ${copied ? "bi-check-lg" : "bi-clipboard"} me-1`} aria-hidden="true"></i>
+            {copied ? "Copiado!" : "Copiar"}
           </button>
         </div>
       )}
-      {error && <div className="alert alert-danger">{error}</div>}
+      {error && <div className="alert alert-danger" role="alert">{error}</div>}
 
       <form onSubmit={handleSubmit} className="mt-4">
         {/* URL */}
@@ -162,9 +195,9 @@ export default function UTMGenerator({ onSuccess }: Props) {
         </div>
 
         {/* Campaign */}
-        <div className="input-group mb-3">
-          <div className="btn-group w-100" role="radiogroup">
-            <span className="input-group-text p5 rounded-end-0"><i className="bi bi-person me-1"></i> Canais:</span>
+        <fieldset className="mb-3">
+          <legend className="form-label p5 d-block estrutura rounded-end-0 fs-6 float-none"><i className="bi bi-person me-1"></i> Canais:</legend>
+          <div className="row row-cols-2 row-cols-md-4 row-cols-lg-8 g-2">
             {["Sales-Prime", "Dani-Martins", "Prosperus", "Lumiere", "Prime", "DMCast", "Joel-Jota", "PodCast"].map(c => {
               const idMap: Record<string, string> = {
                 "Sales-Prime": "sales", "Dani-Martins": "dani", "Prosperus": "prosperus",
@@ -173,18 +206,18 @@ export default function UTMGenerator({ onSuccess }: Props) {
               };
               const cssId = `profile_${idMap[c]}`;
               return (
-                <React.Fragment key={c}>
+                <div className="col" key={c}>
                   <input type="radio" className="btn-check" id={cssId} name="campaign" value={c} checked={campaign === c} onChange={() => setCampaign(c)} disabled={isDisabled} />
-                  <label className="btn btn-outline-secondary" htmlFor={cssId}>{c}</label>
-                </React.Fragment>
+                  <label className="btn btn-outline-secondary w-100" htmlFor={cssId}>{c}</label>
+                </div>
               );
             })}
           </div>
-        </div>
+        </fieldset>
 
         {/* Content Select */}
-        <div className="mb-3">
-          <label className="form-label p5 d-block estrutura rounded-end-0"><i className="bi bi-diagram-3 me-1"></i> Origem / Fonte:</label>
+        <fieldset className="mb-3">
+          <legend className="form-label p5 d-block estrutura rounded-end-0 fs-6 float-none"><i className="bi bi-diagram-3 me-1"></i> Origem / Fonte:</legend>
           <div className="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-2">
             {[
               {v: "TP", l: "Mídia Paga (TP)"}, {v: "TO", l: "Mídia Orgânica (TO)"}, {v: "SEM", l: "Pesquisa Paga (SEM)"},
@@ -193,12 +226,12 @@ export default function UTMGenerator({ onSuccess }: Props) {
               {v: "TV", l: "Mídia Televisiva"}, {v: "APP", l: "APP Mobile"}, {v: "WEBINAR", l: "WEBINAR"}
             ].map(c => (
               <div className="col" key={c.v}>
-                <input type="radio" className="btn-check" id={`content_${c.v.toLowerCase()}`} value={c.v} checked={contentSelect === c.v} onChange={() => setContentSelect(c.v)} disabled={isDisabled} />
+                <input type="radio" className="btn-check" id={`content_${c.v.toLowerCase()}`} name="contentSelect" value={c.v} checked={contentSelect === c.v} onChange={() => setContentSelect(c.v)} disabled={isDisabled} />
                 <label className="btn btn-outline-secondary w-100" htmlFor={`content_${c.v.toLowerCase()}`}>{c.l}</label>
               </div>
             ))}
           </div>
-        </div>
+        </fieldset>
 
         {/* Dynamic Containers */}
         {contentSelect === "COMM" && (
@@ -232,7 +265,7 @@ export default function UTMGenerator({ onSuccess }: Props) {
                   const cssId = `ss_${t.toLowerCase().split('_').reverse().join('_')}`;
                   return (
                     <React.Fragment key={t}>
-                      <input type="radio" className="btn-check" id={cssId} value={t} checked={ssContent === t} onChange={() => setSsContent(t)} />
+                      <input type="radio" className="btn-check" id={cssId} name="ssContent" value={t} checked={ssContent === t} onChange={() => setSsContent(t)} />
                       <label className="btn btn-outline-secondary" htmlFor={cssId}>{t}</label>
                     </React.Fragment>
                   );
@@ -268,17 +301,23 @@ export default function UTMGenerator({ onSuccess }: Props) {
 
         {/* Source */}
         {!hideSourceMedium && (
-          <div className="input-group mb-3">
-            <div className="btn-group w-100" role="radiogroup">
-              <span className="input-group-text p5 rounded-end-0"><i className="bi bi-menu-up me-1"></i> Source:</span>
-              {["ig", "yt", "in", "tktk", "thrd", "spot", "wpp", "appl", "amz", "dzr", "email", "site"].map(s => (
-                <React.Fragment key={s}>
-                  <input type="radio" className="btn-check" id={`source_${s}`} value={s} checked={source === s} onChange={() => setSource(s)} disabled={isDisabled || Boolean(contentSelect === "SSELL" && ssContent && !ssContent.includes(s.toUpperCase().substring(0,2)))} />
-                  <label className="btn btn-outline-secondary" htmlFor={`source_${s}`}><i className={`bi bi-${s === 'wpp' ? 'whatsapp' : s === 'in' ? 'linkedin' : s === 'ig' ? 'instagram' : s === 'yt' ? 'youtube' : s === 'tktk' ? 'tiktok' : s === 'thrd' ? 'threads' : s === 'spot' ? 'spotify' : s === 'appl' ? 'apple' : s === 'amz' ? 'amazon' : s === 'email' ? 'envelope' : s === 'dzr' ? 'music-note-beamed' : 'globe'}`}></i></label>
-                </React.Fragment>
-              ))}
+          <fieldset className="mb-3">
+            <legend className="form-label p5 d-block estrutura rounded-end-0 fs-6 float-none"><i className="bi bi-menu-up me-1"></i> Source:</legend>
+            <div className="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-2">
+              {["ig", "yt", "in", "tktk", "thrd", "spot", "wpp", "appl", "amz", "dzr", "email", "site"].map(s => {
+                const meta = sourceMeta[s];
+                return (
+                  <div className="col" key={s}>
+                    <input type="radio" className="btn-check" id={`source_${s}`} name="source" value={s} checked={source === s} onChange={() => setSource(s)} disabled={isDisabled || Boolean(contentSelect === "SSELL" && ssContent && !ssContent.includes(s.toUpperCase().substring(0,2)))} />
+                    <label className="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2" htmlFor={`source_${s}`}>
+                      <i className={`bi bi-${meta.icone}`} aria-hidden="true"></i>
+                      <span>{meta.nome}</span>
+                    </label>
+                  </div>
+                );
+              })}
             </div>
-          </div>
+          </fieldset>
         )}
 
         {/* Medium */}
@@ -322,7 +361,7 @@ export default function UTMGenerator({ onSuccess }: Props) {
               <small className="text-muted fw-bold">Preview:</small>
             </div>
             <div className="mt-1" style={{ wordBreak: "break-all" }}>
-              <span className="text-muted small">{previewUrl}</span>
+              <span className="small font-monospace">{previewUrl}</span>
             </div>
           </div>
         </div>
