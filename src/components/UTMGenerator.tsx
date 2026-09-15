@@ -7,6 +7,8 @@ import { useAuth } from "@/lib/auth-context";
 
 interface Props {
   onSuccess?: (code: string) => void;
+  /** chamado pelo aviso de "precisa estar logado" para abrir o modal de login */
+  onRequireLogin?: () => void;
 }
 
 const mediumMap: Record<string, string[]> = {
@@ -54,7 +56,7 @@ function normalizeForUtm(text: string) {
   return text;
 }
 
-export default function UTMGenerator({ onSuccess }: Props) {
+export default function UTMGenerator({ onSuccess, onRequireLogin }: Props) {
   const { session } = useAuth();
   const isDisabled = !session;
   
@@ -187,11 +189,26 @@ export default function UTMGenerator({ onSuccess }: Props) {
       )}
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
 
-      <form onSubmit={handleSubmit} className="mt-4">
+      {/* Deslogado, o formulario inteiro fica desabilitado. Sem este aviso o
+          usuario ve campos cinzas e nao sabe por que. O legado em PHP tinha
+          a mesma frase, mas so como tooltip no campo de URL. */}
+      {isDisabled && (
+        <div className="ds-notice" role="status" id="aviso-login">
+          <i className="bi bi-lock-fill" aria-hidden="true"></i>
+          <span>Precisa estar logado para gerar UTMs.</span>
+          {onRequireLogin && (
+            <button type="button" className="btn btn-sm ds-nav ds-notice__cta" onClick={onRequireLogin}>
+              <i className="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i>Entrar
+            </button>
+          )}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="mt-4" aria-describedby={isDisabled ? "aviso-login" : undefined}>
         {/* URL */}
         <div className="input-group mb-3">
           <span className="input-group-text p5"><i className="bi bi-link me-1"></i> URL do site:</span>
-          <input type="url" className="form-control theme-input" required disabled={isDisabled} value={url} onChange={e => setUrl(e.target.value)} />
+          <input type="url" className="form-control theme-input" required disabled={isDisabled} title={isDisabled ? "Precisa estar logado para gerar UTMs" : undefined} value={url} onChange={e => setUrl(e.target.value)} />
         </div>
 
         {/* Campaign */}
@@ -368,7 +385,8 @@ export default function UTMGenerator({ onSuccess }: Props) {
 
         <div className="d-flex gap-3 mb-4 mt-4">
           <button type="submit" className="ag-btn-accent flex-grow-1" disabled={isDisabled || loading}>
-            <i className="bi bi-magic me-2"></i> {loading ? "Gerando..." : "Gerar UTM"}
+            <i className={`bi ${isDisabled ? "bi-lock-fill" : "bi-magic"} me-2`} aria-hidden="true"></i>
+            {isDisabled ? "Entre para gerar UTMs" : loading ? "Gerando..." : "Gerar UTM"}
           </button>
         </div>
       </form>

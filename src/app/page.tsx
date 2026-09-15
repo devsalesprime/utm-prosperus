@@ -45,7 +45,7 @@ export default function HomePage() {
       )}
 
       {/* Formulário UTM Generator (estilo original com disabled se não logado) */}
-      <UTMGenerator onSuccess={() => setRefreshKey(k => k + 1)} />
+      <UTMGenerator onSuccess={() => setRefreshKey(k => k + 1)} onRequireLogin={() => openModal("login")} />
 
       {/* Sobre UTMs (Accordion) */}
       <div className="container mt-4 mb-5">

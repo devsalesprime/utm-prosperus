@@ -561,3 +561,23 @@ body:not(.bg-dark) .ds-day__link { color: #7A621F; }
 }
 .ds-day__hint { font-size: 0.8125rem; color: var(--color-text-muted); margin: 8px 0 0; }
 .ds-day__close { margin-left: auto; }
+
+/* ---- Aviso de "precisa estar logado" ----
+   Fala baixo: contorno em Ouro Nobre, sem fundo gritante. O botao Entrar
+   e o mesmo botao discreto da navegacao. */
+.ds-notice {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid rgba(202, 154, 67, 0.55);
+  border-left: 3px solid #CA9A43;
+  border-radius: 8px;
+  background: rgba(202, 154, 67, 0.08);
+  color: var(--color-text-main);
+  font-size: 0.9375rem;
+}
+.ds-notice > i { color: #CA9A43; }
+.ds-notice__cta { margin-left: auto; }
+@media (max-width: 575.98px) { .ds-notice__cta { margin-left: 0; width: 100%; } }
