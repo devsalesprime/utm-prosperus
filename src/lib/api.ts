@@ -158,6 +158,16 @@ export async function toggleAdmin(userId: number, isAdmin: boolean): Promise<{ s
   });
   return res.json();
 }
+export async function deleteAdminUser(userId: number, password: string): Promise<{ success?: boolean; error?: string }> {
+  const res = await fetch(`${API_BASE}/admin_users.php`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ action: "delete", user_id: userId, password }),
+  });
+  return res.json();
+}
+
 // Append to the end of api.ts
 export async function getTeamMembers() {
   try {

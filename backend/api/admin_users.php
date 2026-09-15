@@ -42,6 +42,30 @@ try {
             echo json_encode(['success' => true]);
             break;
 
+        case 'delete':
+            // Irreversivel: exige a senha master, como a exclusao de UTM.
+            $userId   = intval($input['user_id'] ?? 0);
+            $password = (string) ($input['password'] ?? '');
+            if (!$userId) throw new Exception('ID inválido');
+            if ($password === '' || $password !== env('MASTER_PASSWORD', '')) {
+                throw new Exception('Senha master incorreta');
+            }
+            if ($userId === intval($_SESSION['user_id'])) {
+                throw new Exception('Você não pode excluir o próprio usuário');
+            }
+            $alvo = $pdo->prepare("SELECT id, is_admin FROM users WHERE id = ?");
+            $alvo->execute([$userId]);
+            $alvo = $alvo->fetch(PDO::FETCH_ASSOC);
+            if (!$alvo) throw new Exception('Usuário não encontrado');
+            if ($alvo['is_admin']) {
+                $admins = (int) $pdo->query("SELECT COUNT(*) FROM users WHERE is_admin = 1")->fetchColumn();
+                if ($admins <= 1) throw new Exception('Não é possível excluir o último administrador');
+            }
+            // As UTMs criadas por essa pessoa ficam: pertencem ao time, nao a conta.
+            $pdo->prepare("DELETE FROM users WHERE id = ?")->execute([$userId]);
+            echo json_encode(['success' => true]);
+            break;
+
         default:
             throw new Exception('Ação inválida');
     }

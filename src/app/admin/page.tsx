@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Header from "@/components/Header";
 import ThemeSwitch from "@/components/ThemeSwitch";
-import { getAdminUsers, approveUser, toggleAdmin } from "@/lib/api";
+import { getAdminUsers, approveUser, toggleAdmin, deleteAdminUser } from "@/lib/api";
 import type { AdminUser } from "@/types/utm";
 import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
@@ -13,6 +14,15 @@ export default function AdminPage() {
   const router = useRouter();
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // exclusao de usuario: irreversivel, exige senha master e confirmacao
+  const [deleteUser, setDeleteUser] = useState<AdminUser | null>(null);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+  const meuId = Number((session as { user_id?: number } | null)?.user_id);
 
   useEffect(() => {
     if (authLoading) return;
@@ -49,6 +59,22 @@ export default function AdminPage() {
     const res = await toggleAdmin(id, !currentStatus);
     if (res.success) loadUsers();
     else alert("Erro ao alterar permissão");
+  };
+
+  const fecharExclusao = () => { setDeleteUser(null); setDeletePassword(""); setDeleteError(""); };
+  const handleDeleteUser = async () => {
+    if (!deleteUser) return;
+    if (!deletePassword) { setDeleteError("Digite a senha master para confirmar."); return; }
+    setDeleteLoading(true); setDeleteError("");
+    try {
+      const res = await deleteAdminUser(deleteUser.id, deletePassword);
+      if (res.success) { fecharExclusao(); loadUsers(); }
+      else setDeleteError(res.error || "Não foi possível excluir o usuário.");
+    } catch {
+      setDeleteError("Falha de rede ao excluir. Tente de novo.");
+    } finally {
+      setDeleteLoading(false);
+    }
   };
 
   if (!session || !session.is_admin) return null;
@@ -133,6 +159,16 @@ export default function AdminPage() {
                         >
                           <i className={`bi ${user.is_admin ? 'bi-arrow-down' : 'bi-arrow-up'}`} aria-hidden="true"></i>
                         </button>
+                        <button
+                          type="button"
+                          className="btn btn-sm ds-nav ds-nav-sair"
+                          onClick={() => { setDeleteUser(user); setDeletePassword(""); setDeleteError(""); }}
+                          disabled={user.id === meuId}
+                          title={user.id === meuId ? "Você não pode excluir o próprio usuário" : "Excluir usuário"}
+                          aria-label={`Excluir ${user.name}`}
+                        >
+                          <i className="bi bi-trash" aria-hidden="true"></i>
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -142,6 +178,44 @@ export default function AdminPage() {
           </div>
         </div>
       </div>
+
+      {mounted && deleteUser && createPortal(
+        <div className="ag-modal-overlay" onClick={fecharExclusao}>
+          <div className="ag-modal" role="dialog" aria-modal="true" aria-labelledby="titulo-excluir-usuario" onClick={e => e.stopPropagation()}>
+            <div className="ag-modal-header">
+              <h3 id="titulo-excluir-usuario">Excluir usuário</h3>
+              <button type="button" className="btn btn-icon btn-ghost" onClick={fecharExclusao} aria-label="Fechar">✕</button>
+            </div>
+            <p style={{ marginBottom: 8 }}>
+              Excluir <strong>{deleteUser.name}</strong> ({deleteUser.email}) apaga o acesso desta pessoa. As UTMs que ela criou continuam no sistema.
+            </p>
+            <p style={{ marginBottom: 20 }}>Esta ação é irreversível. Digite a senha master para confirmar.</p>
+            {deleteError && <div className="alert alert-danger" role="alert" style={{ marginBottom: 16 }}>{deleteError}</div>}
+            <div className="form-group" style={{ marginBottom: 20 }}>
+              <label className="form-label" htmlFor="senha-master-usuario">Senha master</label>
+              <input type="text" name="dummy_email" style={{ display: "none" }} />
+              <input
+                id="senha-master-usuario"
+                type="password"
+                className="form-control"
+                placeholder="••••••••"
+                value={deletePassword}
+                onChange={e => setDeletePassword(e.target.value)}
+                onKeyDown={e => { if (e.key === "Enter") handleDeleteUser(); }}
+                autoComplete="new-password"
+                autoFocus
+              />
+            </div>
+            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
+              <button type="button" className="btn btn-ghost" onClick={fecharExclusao}>Cancelar</button>
+              <button type="button" className="btn btn-danger" onClick={handleDeleteUser} disabled={deleteLoading}>
+                {deleteLoading ? "Excluindo…" : "Excluir usuário"}
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </>
   );
 }
