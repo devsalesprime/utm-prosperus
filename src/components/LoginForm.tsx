@@ -22,6 +22,9 @@ export default function LoginForm({ initialMode = "login", onClose }: Props) {
   // Login
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // olho de mostrar/ocultar senha, um por formulario
+  const [showLoginPw, setShowLoginPw] = useState(false);
+  const [showRegPw, setShowRegPw] = useState(false);
 
   // Register
   const [name, setName] = useState("");
@@ -88,7 +91,12 @@ export default function LoginForm({ initialMode = "login", onClose }: Props) {
             <h1>Crie sua conta</h1>
             <input type="text" className="form-control mb-3" placeholder="Nome Completo" value={name} onChange={e => setName(e.target.value)} required />
             <input type="email" className="form-control mb-3" placeholder="Email" value={regEmail} onChange={e => setRegEmail(e.target.value)} required />
-            <input type="password" className="form-control mb-3" placeholder="Senha" value={regPassword} onChange={e => setRegPassword(e.target.value)} required />
+            <div className="ds-senha mb-3">
+              <input id="reg-senha" type={showRegPw ? "text" : "password"} className="form-control" placeholder="Senha" value={regPassword} onChange={e => setRegPassword(e.target.value)} autoComplete="new-password" required />
+              <button type="button" className="ds-senha__olho" onClick={() => setShowRegPw(v => !v)} aria-label={showRegPw ? "Ocultar senha" : "Mostrar senha"} aria-pressed={showRegPw} aria-controls="reg-senha" title={showRegPw ? "Ocultar senha" : "Mostrar senha"}>
+                <i className={`bi ${showRegPw ? "bi-eye-slash" : "bi-eye"}`} aria-hidden="true"></i>
+              </button>
+            </div>
             <button type="submit" disabled={loading}>{loading ? "Enviando..." : "Cadastrar"}</button>
           </form>
         </div>
@@ -97,7 +105,12 @@ export default function LoginForm({ initialMode = "login", onClose }: Props) {
             <form onSubmit={handleLogin}>
               <h1>Logar</h1>
               <input type="email" className="form-control mb-3" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-              <input type="password" className="form-control mb-3" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} required />
+              <div className="ds-senha mb-3">
+                <input id="login-senha" type={showLoginPw ? "text" : "password"} className="form-control" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} autoComplete="current-password" required />
+                <button type="button" className="ds-senha__olho" onClick={() => setShowLoginPw(v => !v)} aria-label={showLoginPw ? "Ocultar senha" : "Mostrar senha"} aria-pressed={showLoginPw} aria-controls="login-senha" title={showLoginPw ? "Ocultar senha" : "Mostrar senha"}>
+                  <i className={`bi ${showLoginPw ? "bi-eye-slash" : "bi-eye"}`} aria-hidden="true"></i>
+                </button>
+              </div>
               <a href="#" onClick={(e) => { e.preventDefault(); setIsForgotPassword(true); setError(""); setSuccess(""); }}>Perdeu sua senha?</a>
               <button type="submit" disabled={loading}>{loading ? "Entrando..." : "Logar"}</button>
             </form>

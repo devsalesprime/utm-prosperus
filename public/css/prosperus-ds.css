@@ -613,7 +613,7 @@ body.bg-dark.theme-prosperus-club .modal form label {
   color: #45525E;
 }
 /* botao de acao do painel claro: navy da marca, texto claro */
-body.theme-prosperus-club .modal form button:not(.ghost) {
+body.theme-prosperus-club .modal form button:not(.ghost):not(.ds-senha__olho) {
   background: #031A2B;
   border-color: #031A2B;
   color: #FCF7F0;
@@ -661,3 +661,50 @@ body.theme-prosperus-club .ag-modal .btn-danger {
 .ag-btn-accent.btn-sm { padding: 0.5rem 1.1rem; font-size: 0.9375rem; box-shadow: none; }
 .ag-btn-accent.btn-sm:hover { transform: none; }
 .ag-btn-accent:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ---- Olho de mostrar/ocultar senha (login e cadastro) ----
+   .modal button pinta todo botao do modal como acao (fundo navy, caixa
+   alta, 12px 45px de padding). O olho e um controle do campo, nao uma
+   acao: precisa zerar isso com especificidade maior. */
+.ds-senha { position: relative; width: 100%; }
+.ds-senha .form-control { padding-right: 44px; margin-bottom: 0; }
+.modal form .ds-senha__olho,
+.ds-senha__olho {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: #61707C;
+  font-size: 1.05rem;
+  letter-spacing: 0;
+  text-transform: none;
+  cursor: pointer;
+}
+.modal form .ds-senha__olho:hover { color: #031A2B; background: rgba(3, 26, 43, 0.06); }
+.modal form .ds-senha__olho:active { transform: translateY(-50%) scale(0.95); }
+.modal form .ds-senha__olho:focus-visible { outline: 3px solid #CA9A43; outline-offset: 1px; }
+.modal form .ds-senha__olho[aria-pressed="true"] { color: #7A621F; }
+
+/* o olho vence qualquer regra de botao de acao do modal, em qualquer tema */
+body.theme-prosperus-club .modal form .ds-senha__olho,
+body.bg-dark.theme-prosperus-club .modal form .ds-senha__olho {
+  background: transparent;
+  border-color: transparent;
+  color: #61707C;
+  padding: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+}
+body.theme-prosperus-club .modal form .ds-senha__olho:hover { color: #031A2B; background: rgba(3, 26, 43, 0.06); }
+body.theme-prosperus-club .modal form .ds-senha__olho[aria-pressed="true"] { color: #7A621F; }
