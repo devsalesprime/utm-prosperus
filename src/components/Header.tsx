@@ -41,7 +41,9 @@ export default function Header({ onShowLoginModal }: Props) {
         </div>
       ) : (
         <div className="z-3 float-md-none float-sm-end text-end mx-2 mb-3">
-          <span className="me-3">Usuário: {session.username}</span>
+          <Link href="/perfil" className="btn btn-sm ds-nav me-2" title="Meu perfil">
+            <i className="bi bi-person-circle me-1" aria-hidden="true"></i>{session.username}
+          </Link>
           {session.is_admin && (
             <Link href="/admin" className="btn btn-sm ds-nav me-2">
               <i className="bi bi-gear me-1" aria-hidden="true"></i>Painel admin

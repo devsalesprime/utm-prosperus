@@ -104,6 +104,27 @@ export interface DayClicks {
   utms: DayClickUTM[];
 }
 
+export interface ProfileUser {
+  id: number;
+  name: string;
+  email: string;
+  is_admin: boolean;
+  is_approved: boolean;
+  created_at: string;
+}
+export interface ProfileActivity {
+  total_utms: number;
+  total_clicks: number;
+  ativas: number;
+  ultima_utm: string | null;
+}
+export interface ProfileData {
+  success?: boolean;
+  error?: string;
+  user: ProfileUser;
+  activity: ProfileActivity;
+}
+
 export interface AdminUser {
   id: number;
   name: string;

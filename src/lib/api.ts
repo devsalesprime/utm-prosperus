@@ -1,5 +1,5 @@
 // Funções de chamada para a API PHP Backend
-import type { AuthSession, CreateUTMPayload, CreateUTMResponse, DashboardData, UTM, AdminUser, DayClicks } from "@/types/utm";
+import type { AuthSession, CreateUTMPayload, CreateUTMResponse, DashboardData, UTM, AdminUser, DayClicks, ProfileData } from "@/types/utm";
 
 const API_BASE = "/api";
 
@@ -164,6 +164,27 @@ export async function deleteAdminUser(userId: number, password: string): Promise
     headers: { "Content-Type": "application/json" },
     credentials: "include",
     body: JSON.stringify({ action: "delete", user_id: userId, password }),
+  });
+  return res.json();
+}
+
+// ── Perfil ────────────────────────────────────────────────────────────────────
+
+export async function getProfile(): Promise<ProfileData> {
+  const res = await fetch(`${API_BASE}/profile.php?action=get`, { credentials: "include", cache: "no-store" });
+  return res.json();
+}
+export async function updateProfileName(name: string): Promise<{ success?: boolean; name?: string; error?: string }> {
+  const res = await fetch(`${API_BASE}/profile.php`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, credentials: "include",
+    body: JSON.stringify({ action: "update_name", name }),
+  });
+  return res.json();
+}
+export async function changePassword(current_password: string, new_password: string, confirm_password: string): Promise<{ success?: boolean; error?: string }> {
+  const res = await fetch(`${API_BASE}/profile.php`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, credentials: "include",
+    body: JSON.stringify({ action: "change_password", current_password, new_password, confirm_password }),
   });
   return res.json();
 }
