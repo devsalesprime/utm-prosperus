@@ -1,5 +1,5 @@
 // Funções de chamada para a API PHP Backend
-import type { AuthSession, CreateUTMPayload, CreateUTMResponse, DashboardData, UTM, AdminUser, DayClicks, ProfileData } from "@/types/utm";
+import type { AuthSession, CreateUTMPayload, CreateUTMResponse, DashboardData, UTM, AdminUser, DayClicks, ProfileData, MasterStatus } from "@/types/utm";
 
 const API_BASE = "/api";
 
@@ -164,6 +164,18 @@ export async function deleteAdminUser(userId: number, password: string): Promise
     headers: { "Content-Type": "application/json" },
     credentials: "include",
     body: JSON.stringify({ action: "delete", user_id: userId, password }),
+  });
+  return res.json();
+}
+
+export async function getMasterStatus(): Promise<MasterStatus> {
+  const res = await fetch(`${API_BASE}/admin_users.php?action=master_status`, { credentials: "include", cache: "no-store" });
+  return res.json();
+}
+export async function setMasterPassword(admin_password: string, new_password: string, confirm_password: string): Promise<MasterStatus> {
+  const res = await fetch(`${API_BASE}/admin_users.php`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, credentials: "include",
+    body: JSON.stringify({ action: "master_set", admin_password, new_password, confirm_password }),
   });
   return res.json();
 }

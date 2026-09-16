@@ -14,6 +14,7 @@ if (!isset($_SESSION['user_id'])) {
 
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/master.php';
 
 $input    = json_decode(file_get_contents('php://input'), true) ?? [];
 $id       = intval($input['id'] ?? 0);
@@ -25,9 +26,8 @@ if (!$id || empty($password)) {
     exit;
 }
 
-// Verificar senha master
-$deletePassword = env('MASTER_PASSWORD', '');
-if ($password !== $deletePassword) {
+// Verificar senha master (banco com hash; .env so como semente)
+if (!master_password_ok($pdo, (string) $password)) {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Senha incorreta']);
     exit;

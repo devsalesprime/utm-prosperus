@@ -4,8 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import Header from "@/components/Header";
 import ThemeSwitch from "@/components/ThemeSwitch";
-import { getAdminUsers, approveUser, toggleAdmin, deleteAdminUser } from "@/lib/api";
-import type { AdminUser } from "@/types/utm";
+import { getAdminUsers, approveUser, toggleAdmin, deleteAdminUser, getMasterStatus, setMasterPassword } from "@/lib/api";
+import type { AdminUser, MasterStatus } from "@/types/utm";
 import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
 
@@ -23,6 +23,31 @@ export default function AdminPage() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
   const meuId = Number((session as { user_id?: number } | null)?.user_id);
+
+  // senha master: protege excluir UTM e excluir usuario
+  const [master, setMaster] = useState<MasterStatus | null>(null);
+  const [masterAdminPw, setMasterAdminPw] = useState("");
+  const [masterNew, setMasterNew] = useState("");
+  const [masterConf, setMasterConf] = useState("");
+  const [masterMsg, setMasterMsg] = useState<{ tipo: "ok" | "erro"; texto: string } | null>(null);
+  const [masterSaving, setMasterSaving] = useState(false);
+  const [showMaster, setShowMaster] = useState(false);
+  const carregarMaster = useCallback(async () => {
+    try { const s = await getMasterStatus(); if (s && s.origem) setMaster(s); } catch { /* status e informativo */ }
+  }, []);
+  const salvarMaster = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMasterMsg(null);
+    if (masterNew.length < 8) { setMasterMsg({ tipo: "erro", texto: "A nova senha master deve ter pelo menos 8 caracteres." }); return; }
+    if (masterNew !== masterConf) { setMasterMsg({ tipo: "erro", texto: "A confirmação não coincide com a nova senha master." }); return; }
+    setMasterSaving(true);
+    try {
+      const r = await setMasterPassword(masterAdminPw, masterNew, masterConf);
+      if (r.success) { setMaster(r); setMasterMsg({ tipo: "ok", texto: "Senha master definida. Ela já vale para as próximas exclusões." }); setMasterAdminPw(""); setMasterNew(""); setMasterConf(""); }
+      else setMasterMsg({ tipo: "erro", texto: r.error || "Não foi possível definir a senha master." });
+    } catch { setMasterMsg({ tipo: "erro", texto: "Falha de rede. Tente de novo." }); }
+    finally { setMasterSaving(false); }
+  };
 
   useEffect(() => {
     if (authLoading) return;
@@ -46,8 +71,9 @@ export default function AdminPage() {
   useEffect(() => {
     if (session && session.is_admin) {
       loadUsers();
+      carregarMaster();
     }
-  }, [session, loadUsers]);
+  }, [session, loadUsers, carregarMaster]);
 
   const handleApprove = async (id: number) => {
     const res = await approveUser(id);
@@ -177,6 +203,51 @@ export default function AdminPage() {
             </table>
           </div>
         </div>
+        {/* Senha master */}
+        <form className="ag-card p-3 mt-3" onSubmit={salvarMaster} autoComplete="off">
+          <h5 className="mb-2"><i className="bi bi-shield-lock ds-icon me-2"></i>Senha master</h5>
+          <p className="small mb-2" style={{ color: "var(--color-text-muted)" }}>
+            Protege as ações irreversíveis: excluir UTM e excluir usuário. Ela não pode ser lida de volta, só substituída.
+          </p>
+          <p className="small mb-3" role="status">
+            {master === null && "Verificando…"}
+            {master?.origem === "banco" && (
+              <>Definida pelo sistema em <strong>{master.atualizado_em ? new Date(master.atualizado_em.replace(" ", "T")).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "—"}</strong>{master.atualizado_por ? <> por <strong>{master.atualizado_por}</strong></> : null}.</>
+            )}
+            {master?.origem === "env" && (
+              <>Ainda usa o valor inicial do arquivo de configuração do servidor. Defina uma nova aqui para passar a controlá-la pelo painel.</>
+            )}
+            {master?.origem === "nenhuma" && (
+              <span className="text-danger">Nenhuma senha master configurada: as exclusões estão bloqueadas até você definir uma.</span>
+            )}
+          </p>
+          <div className="row g-3">
+            <div className="col-md-4">
+              <label className="form-label ds-legend" htmlFor="master-admin">Sua senha de administrador</label>
+              <div className="ds-senha">
+                <input id="master-admin" type={showMaster ? "text" : "password"} className="form-control" value={masterAdminPw} onChange={e => setMasterAdminPw(e.target.value)} autoComplete="current-password" required />
+                <button type="button" className="ds-senha__olho" onClick={() => setShowMaster(v => !v)} aria-label={showMaster ? "Ocultar senhas" : "Mostrar senhas"} aria-pressed={showMaster}><i className={`bi ${showMaster ? "bi-eye-slash" : "bi-eye"}`} aria-hidden="true"></i></button>
+              </div>
+              <div className="form-text">Você não precisa saber a master atual, só provar que é você.</div>
+            </div>
+            <div className="col-md-4">
+              <label className="form-label ds-legend" htmlFor="master-nova">Nova senha master</label>
+              <input id="master-nova" type={showMaster ? "text" : "password"} className="form-control" value={masterNew} onChange={e => setMasterNew(e.target.value)} autoComplete="new-password" minLength={8} required />
+              <div className="form-text">Pelo menos 8 caracteres.</div>
+            </div>
+            <div className="col-md-4">
+              <label className="form-label ds-legend" htmlFor="master-conf">Confirmar nova senha master</label>
+              <input id="master-conf" type={showMaster ? "text" : "password"} className={`form-control ${masterConf && masterConf !== masterNew ? "is-invalid" : ""}`} value={masterConf} onChange={e => setMasterConf(e.target.value)} autoComplete="new-password" required />
+            </div>
+          </div>
+          <div className="d-flex align-items-center gap-3 flex-wrap mt-3">
+            <button type="submit" className="ag-btn-accent btn-sm px-4" disabled={masterSaving || !masterAdminPw || !masterNew || !masterConf}>
+              {masterSaving ? "Definindo…" : "Definir senha master"}
+            </button>
+            {masterMsg && <span className={`small ${masterMsg.tipo === "ok" ? "text-success" : "text-danger"}`} role="status">{masterMsg.texto}</span>}
+          </div>
+        </form>
+
       </div>
 
       {mounted && deleteUser && createPortal(

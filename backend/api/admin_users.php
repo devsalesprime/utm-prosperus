@@ -13,6 +13,7 @@ if (!isset($_SESSION['user_id']) || !$_SESSION['is_admin']) {
 }
 
 require_once __DIR__ . '/../includes/db.php';
+require dirname(__DIR__) . '/includes/master.php';
 
 $input  = json_decode(file_get_contents('php://input'), true) ?? [];
 $action = $input['action'] ?? $_GET['action'] ?? 'list';
@@ -47,7 +48,7 @@ try {
             $userId   = intval($input['user_id'] ?? 0);
             $password = (string) ($input['password'] ?? '');
             if (!$userId) throw new Exception('ID inválido');
-            if ($password === '' || $password !== env('MASTER_PASSWORD', '')) {
+            if (!master_password_ok($pdo, $password)) {
                 throw new Exception('Senha master incorreta');
             }
             if ($userId === intval($_SESSION['user_id'])) {
@@ -64,6 +65,31 @@ try {
             // As UTMs criadas por essa pessoa ficam: pertencem ao time, nao a conta.
             $pdo->prepare("DELETE FROM users WHERE id = ?")->execute([$userId]);
             echo json_encode(['success' => true]);
+            break;
+
+        case 'master_status':
+            echo json_encode(['success' => true] + master_status($pdo), JSON_UNESCAPED_UNICODE);
+            break;
+
+        case 'master_set':
+            // Quem troca nao precisa saber a master atual (e o caso de uso:
+            // ela se perdeu). Precisa provar que e o proprio admin logado.
+            $minha   = (string) ($input['admin_password'] ?? '');
+            $nova    = (string) ($input['new_password'] ?? '');
+            $confirm = (string) ($input['confirm_password'] ?? '');
+            if ($minha === '' || $nova === '' || $confirm === '') throw new Exception('Preencha os três campos.');
+            if (strlen($nova) < 8) throw new Exception('A nova senha master deve ter pelo menos 8 caracteres.');
+            if ($nova !== $confirm) throw new Exception('A confirmação não coincide com a nova senha master.');
+            $st = $pdo->prepare("SELECT name, password FROM users WHERE id = ? AND is_admin = 1");
+            $st->execute([(int) $_SESSION['user_id']]);
+            $eu = $st->fetch(PDO::FETCH_ASSOC);
+            if (!$eu || !password_verify($minha, $eu['password'])) {
+                http_response_code(403);
+                echo json_encode(['error' => 'Sua senha de administrador está incorreta.'], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+            master_set($pdo, $nova, $eu['name']);
+            echo json_encode(['success' => true] + master_status($pdo), JSON_UNESCAPED_UNICODE);
             break;
 
         default:

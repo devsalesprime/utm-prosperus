@@ -708,3 +708,7 @@ body.bg-dark.theme-prosperus-club .modal form .ds-senha__olho {
 }
 body.theme-prosperus-club .modal form .ds-senha__olho:hover { color: #031A2B; background: rgba(3, 26, 43, 0.06); }
 body.theme-prosperus-club .modal form .ds-senha__olho[aria-pressed="true"] { color: #7A621F; }
+/* olho fora do modal (perfil/admin): no escuro o cinza medio some no navy */
+body.bg-dark.theme-prosperus-club .ag-card .ds-senha__olho { color: #95A4B4; }
+body.bg-dark.theme-prosperus-club .ag-card .ds-senha__olho:hover { color: #FCF7F0; background: rgba(255, 218, 113, 0.10); }
+body.theme-prosperus-club .ag-card .ds-senha__olho:focus-visible { outline: 3px solid #CA9A43; outline-offset: 1px; }

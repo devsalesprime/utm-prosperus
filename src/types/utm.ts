@@ -125,6 +125,14 @@ export interface ProfileData {
   activity: ProfileActivity;
 }
 
+export interface MasterStatus {
+  success?: boolean;
+  error?: string;
+  origem: "banco" | "env" | "nenhuma";
+  atualizado_em: string | null;
+  atualizado_por: string | null;
+}
+
 export interface AdminUser {
   id: number;
   name: string;
